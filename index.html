@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AE 202 Fire Protection Review Test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: a drawing-sheet title block on top, a section rail on the left, one column of question cards. */
+:root{
+  --paper:#edf0f4; --sheet:#ffffff; --ink:#18212b; --muted:#566473; --line:#ccd4dd;
+  --accent:#1d4f91; --accent-soft:#e2ebf7;
+  --good:#1c7448; --good-soft:#e1f3e9; --bad:#b3261e; --bad-soft:#fbe8e6; --warn:#7d5200; --warn-soft:#fff2d2;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"IBM Plex Sans","Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0f151c; --sheet:#18212b; --ink:#e6ebf0; --muted:#9aa8b6; --line:#2d3a48;
+    --accent:#84b4f0; --accent-soft:#1b2e47;
+    --good:#62cb95; --good-soft:#133423; --bad:#f19088; --bad-soft:#3f1f1c; --warn:#e8b955; --warn-soft:#392d11;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0f151c; --sheet:#18212b; --ink:#e6ebf0; --muted:#9aa8b6; --line:#2d3a48;
+  --accent:#84b4f0; --accent-soft:#1b2e47;
+  --good:#62cb95; --good-soft:#133423; --bad:#f19088; --bad-soft:#3f1f1c; --warn:#e8b955; --warn-soft:#392d11;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:20px 16px 80px;display:flex;flex-direction:column;gap:16px}
+
+/* title block */
+.titleblock{background:var(--sheet);border:1.5px solid var(--ink);display:grid;grid-template-columns:1fr auto}
+.titleblock h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,5vw,44px);line-height:1.02;margin:0;padding:16px 18px;letter-spacing:.01em;text-transform:uppercase;text-wrap:balance}
+.tb-cells{display:grid;grid-template-columns:repeat(2,minmax(96px,auto));border-left:1.5px solid var(--ink)}
+.tb-cell{padding:8px 12px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);display:flex;flex-direction:column;gap:2px}
+.tb-cell:nth-child(2n){border-right:0}
+.tb-cell:nth-last-child(-n+2){border-bottom:0}
+.tb-cell span{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.tb-cell b{font-family:var(--mono);font-weight:500;font-size:15px;font-variant-numeric:tabular-nums}
+@media (max-width:640px){.titleblock{grid-template-columns:1fr}.tb-cells{border-left:0;border-top:1.5px solid var(--ink)}}
+
+/* status bar */
+.status{position:sticky;top:0;z-index:5;background:var(--paper);padding:8px 0;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;border-bottom:1px solid var(--line)}
+.meter{flex:1 1 220px;display:flex;flex-direction:column;gap:4px;min-width:200px}
+.meter small{font-family:var(--mono);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.bar{height:8px;background:var(--line);position:relative;overflow:hidden}
+.bar i{position:absolute;inset:0 auto 0 0;background:var(--accent)}
+.bar i.ok{background:var(--good)}
+.seg{display:inline-flex;border:1.5px solid var(--ink)}
+.seg button{background:var(--sheet);border:0;padding:6px 12px;font-size:14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--sheet)}
+
+.cols{display:grid;grid-template-columns:230px minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:820px){.cols{grid-template-columns:minmax(0,1fr)}}
+
+/* rail */
+.rail{position:sticky;top:64px;display:flex;flex-direction:column;gap:4px}
+.rail a{display:grid;grid-template-columns:22px 1fr auto;gap:8px;align-items:baseline;padding:7px 10px;text-decoration:none;color:var(--ink);border-left:3px solid transparent;font-size:14.5px;line-height:1.3}
+.rail a:hover{background:var(--accent-soft)}
+.rail a[aria-current="true"]{border-left-color:var(--accent);background:var(--sheet);font-weight:600}
+.rail a .n{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.rail a .c{font-family:var(--mono);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+@media (max-width:820px){
+  .rail{position:static;flex-direction:row;overflow-x:auto;padding-bottom:6px;gap:6px}
+  .rail a{flex:0 0 auto;grid-template-columns:auto auto auto;border-left:0;border:1px solid var(--line);background:var(--sheet);white-space:nowrap}
+  .rail a[aria-current="true"]{border-color:var(--accent);box-shadow:inset 0 -3px 0 var(--accent)}
+}
+
+main{display:flex;flex-direction:column;gap:14px;min-width:0}
+.sec-head{display:flex;flex-direction:column;gap:4px}
+.sec-head h2{font-family:var(--display);font-weight:600;font-size:30px;line-height:1.1;margin:0;text-transform:uppercase;letter-spacing:.01em;text-wrap:balance}
+.sec-head p{margin:0;color:var(--muted);max-width:65ch}
+
+.card{background:var(--sheet);border:1px solid var(--line);padding:16px 18px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:76px}
+.card.right{border-left:4px solid var(--good)}
+.card.wrong{border-left:4px solid var(--bad)}
+.qmeta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center}
+.qnum{font-family:var(--mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;margin-right:4px}
+.pill{font-family:var(--mono);font-size:11px;letter-spacing:.03em;padding:2px 7px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.pill.src{background:var(--accent-soft);border-color:transparent;color:var(--accent)}
+.pill.blank{background:var(--warn-soft);border-color:transparent;color:var(--warn)}
+.pill.ok{background:var(--good-soft);border-color:transparent;color:var(--good)}
+.pill.no{background:var(--bad-soft);border-color:transparent;color:var(--bad)}
+.prompt{margin:0;font-size:17px;font-weight:500;max-width:68ch}
+.opts{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;border:0}
+.opt{display:grid;grid-template-columns:20px 1fr;gap:10px;align-items:start;padding:8px 10px;border:1px solid var(--line);cursor:pointer}
+.opt:hover{border-color:var(--accent)}
+.opt input{margin:4px 0 0;accent-color:var(--accent)}
+.opt.locked{cursor:default}
+.opt.locked:hover{border-color:var(--line)}
+.opt.is-right{background:var(--good-soft);border-color:var(--good)}
+.opt.is-wrong{background:var(--bad-soft);border-color:var(--bad)}
+.opt.is-right:hover{border-color:var(--good)}.opt.is-wrong:hover{border-color:var(--bad)}
+.numrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.numrow input{width:160px;padding:8px 10px;border:1.5px solid var(--ink);background:var(--sheet);font-family:var(--mono);font-variant-numeric:tabular-nums}
+.numrow span{font-family:var(--mono);font-size:14px;color:var(--muted)}
+textarea{width:100%;min-height:74px;padding:8px 10px;border:1px solid var(--line);background:var(--sheet);resize:vertical}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.btn{background:var(--ink);color:var(--sheet);border:1.5px solid var(--ink);padding:7px 14px;font-size:14.5px;font-weight:500;cursor:pointer}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.good{background:var(--good);border-color:var(--good);color:var(--sheet)}
+.btn.bad{background:var(--bad);border-color:var(--bad);color:var(--sheet)}
+.fb{border-top:1px dashed var(--line);padding-top:10px;display:flex;flex-direction:column;gap:6px}
+.fb p{margin:0;max-width:68ch}
+.fb .ans{font-family:var(--mono);font-size:14px}
+.fb .lab{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+.figwrap{display:flex;flex-direction:column;gap:4px}
+.fig{border:1px solid var(--line);background:var(--paper);overflow-x:auto;padding:8px}
+.fig svg{display:block;width:100%;height:auto;margin:0 auto}
+.figcap{margin:0;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.fig .fl{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.fig .fw{fill:none;stroke:var(--accent);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.fig .fb{fill:none;stroke:var(--muted);stroke-width:1.5}
+.fig .fx{fill:none;stroke:var(--ink);stroke-width:4}
+.fig .ff{fill:var(--sheet);stroke:var(--ink);stroke-width:2;stroke-linejoin:round}
+.fig .fk{fill:var(--ink)}
+.fig .fd{fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:5 4}
+.fig .fa{fill:var(--accent)}
+.fig .fflame{fill:var(--bad)}
+.fig .gap{stroke:var(--paper);stroke-width:6}
+.fig .gr{stroke:var(--line);stroke-width:1}
+.fig .ax{stroke:var(--muted);stroke-width:1.5;fill:none}
+.fig .pt{fill:var(--accent);stroke:var(--paper);stroke-width:2}
+.fig .ft{fill:var(--muted);font:12px var(--mono)}
+.fig .lead{stroke:var(--accent);stroke-width:1.5;fill:none}
+.hs circle{fill:var(--sheet);stroke:var(--accent);stroke-width:2}
+.hs text{fill:var(--accent);font:600 13px var(--mono);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.hs.live{cursor:pointer}
+.hs.live:hover circle{fill:var(--accent-soft)}
+.hs.sel circle{fill:var(--accent)}.hs.sel text{fill:var(--sheet)}
+.hs.ok circle{fill:var(--good);stroke:var(--good)}.hs.ok text{fill:var(--sheet)}
+.hs.no circle{fill:var(--bad);stroke:var(--bad)}.hs.no text{fill:var(--sheet)}
+.hs:focus{outline:none}.hs:focus-visible circle{stroke-width:4}
+.hs circle.hit{fill:transparent!important;stroke:none!important}
+.panel{background:var(--sheet);border:1px solid var(--line);padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.panel h3{font-family:var(--display);font-weight:600;font-size:21px;text-transform:uppercase;margin:0;letter-spacing:.02em}
+.panel p,.panel li{max-width:68ch}
+.panel p{margin:0}
+.panel a{color:var(--accent)}
+.panel ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
+td.num,th.num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+td .bar{min-width:90px}
+.bigscore{display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline}
+.bigscore b{font-family:var(--display);font-weight:700;font-size:56px;line-height:1;font-variant-numeric:tabular-nums}
+.bigscore span{color:var(--muted)}
+.missed{display:flex;flex-direction:column;gap:0}
+.missed button{all:unset;cursor:pointer;display:grid;grid-template-columns:64px 1fr;gap:10px;padding:8px 4px;border-bottom:1px solid var(--line)}
+.missed button:hover{background:var(--accent-soft)}
+.missed button:focus-visible{outline:2px solid var(--accent)}
+.missed .k{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.next{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="titleblock">
+    <h1>AE 202 Fire Protection Review Test</h1>
+    <div class="tb-cells">
+      <div class="tb-cell"><span>Questions</span><b id="tbQ">0</b></div>
+      <div class="tb-cell"><span>Sections</span><b id="tbS">0</b></div>
+      <div class="tb-cell"><span>Sources</span><b>7 lectures</b></div>
+      <div class="tb-cell"><span>Score</span><b id="tbScore">0 / 0</b></div>
+    </div>
+  </header>
+
+  <div class="status">
+    <div class="meter">
+      <small id="meterText">Answered 0</small>
+      <div class="bar" aria-hidden="true"><i id="meterBar" style="width:0%"></i></div>
+    </div>
+    <div class="seg" role="group" aria-label="Test mode">
+      <button type="button" id="modeStudy" aria-pressed="true">Study: check as you go</button>
+      <button type="button" id="modeExam" aria-pressed="false">Exam: grade at the end</button>
+    </div>
+  </div>
+
+  <div class="cols">
+    <nav class="rail" id="rail" aria-label="Sections"></nav>
+    <main id="main"></main>
+  </div>
+</div>
+
+<script>
+"use strict";
+var SRC={
+  S10:"Lec 10.1 Statistics",
+  L10:"Lec 10.2 Principles",
+  C10:"Lec 10.2 Codes",
+  L11:"Lec 11.1a Systems I",
+  L12:"Lec 11.1b Systems II",
+  FA:"Lec 11.2 Fire alarm",
+  JPA:"Lec 12.1 guest slides"
+};
+/* mc: first option is the correct one (display order is shuffled).
+   ms: the first c options are correct. tf: a is true or false.
+   num: a is the answer, tol the tolerance, u the unit. sa: m is the model answer, self-graded.
+   b:1 marks an answer that fills a blank left empty in the uploaded notes. */
+var SECTIONS=[
+{id:"theory",name:"Fire theory and extinguishment",blurb:"Combustion, the heat balance, and the seven ways the notes list for putting a fire out.",qs:[
+{s:"L10",t:"mc",q:"The notes define combustion as a continuous reaction that combines a fuel with an oxidizing agent. In that reaction the fuel is the:",o:["Reducing agent","Oxidizing agent","Catalyst","Inhibitor"],e:"The fuel is the reducing agent. It combines with an oxidizing agent, the most prominent of which is oxygen."},
+{s:"L10",t:"mc",q:"In the non-flaming mode of combustion (glowing, deep-seated embers), the fuel is in the form of:",o:["An incandescent solid","A vapor","A liquid film","Free radicals"],e:"Non-flaming: the fuel is an incandescent solid. Flaming: the fuel is a vapor, burning as an uninhibited chain reaction."},
+{s:"L10",t:"mc",q:"Which mode of combustion is associated with high burning rates, including explosion?",o:["Flaming","Non-flaming","Glowing","Deep-seated"],e:"The flaming type is tied to high burning rates, up to and including explosion."},
+{s:"L10",t:"mc",q:"The combustion process is a balance between heat generated (+) and heat lost to the environment (−). What happens when the heat loss is excessive?",o:["The fire dies down","The fire continues","The fire changes from glowing to flaming","Flash-over follows"],e:"If heat generated is excessive, the fire continues. If heat loss is excessive, it dies down."},
+{s:"L10",t:"mc",q:"How does the heat generated by a fire split between sensible heat of the effluent and radiant heat flux?",o:["2/3 sensible heat of effluent, 1/3 radiant heat flux","1/3 sensible heat of effluent, 2/3 radiant heat flux","Half and half","1/10 sensible heat of effluent, 9/10 radiant heat flux"],e:"Heat generated: 2/3 sensible heat of effluent and 1/3 radiant heat flux."},
+{s:"L11",p:1,t:"ms",c:4,q:"Lecture 11.1a gives four reasons water is used for fire suppression. Select all four.",o:["Low cost","It is available","It removes 970 BTU/lb when it vaporizes","Volumetric expansion","It does not conduct electricity","It chemically inhibits the flame"],e:"Cost (low), available, removes 970 BTU/lb to vaporize, and volumetric expansion."},
+{s:"L11",p:1,t:"num",a:970,tol:0,u:"BTU/lb",q:"How much heat does one pound of water remove as it vaporizes?",e:"970 BTU/lb, the latent heat of vaporization."},
+{s:"L10",t:"mc",q:"When cooling a fire with water, why do the notes caution about a straight hose?",o:["The hose stream is too forceful","It delivers too little water","It cannot reach the ceiling","It adds oxygen to the room"],e:"The note reads: straight hose, hose stream too forceful."},
+{s:"L10",t:"mc",q:"Heat removal by water takes two forms. Which pair?",o:["Sensible heat and latent heat","Radiant heat and conductive heat","Latent heat and chemical heat","Sensible heat and radiant flux"],e:"Sensible heat (1 Btu per °F per lb) as the water warms, and latent heat (970 BTU/lb) as it turns to steam."},
+{s:"L10",t:"num",a:1,tol:0,u:"Btu per °F per lb",q:"How much sensible heat does a pound of water absorb for each degree Fahrenheit it warms?",e:"1 Btu/°F·lb. Compare that with 970 BTU/lb of latent heat: vaporizing the water does most of the cooling."},
+{s:"L10",t:"num",a:2500,tol:0,u:": 1",q:"Per the Lecture 10.2 notes, water turning to steam expands at a volumetric ratio of how much to 1?",e:"The notes give 2500:1."},
+{s:"L10",t:"mc",q:"How does that volumetric expansion help put the fire out?",o:["The steam displaces oxygen around the fire","It raises the ignition temperature of the fuel","It ties up free radicals","It removes the fuel"],e:"The expanding steam displaces O₂. A water stream can also induce ventilation, which is used during firefighting."},
+{s:"L10",t:"ms",c:2,q:"Fire extinguishers add surfactants or alkali carbonate to water. What do those additives do? Select all that apply.",o:["Retard run-off","Prolong soaking","Increase volumetric expansion","Tie up O*, OH* and H* radicals"],e:"They retard run-off and prolong soaking, so the water stays on the fuel."},
+{s:"L10",t:"num",a:20.9,tol:0.1,u:"%",q:"What percentage of air is oxygen, per the notes?",e:"Air is 20.9% oxygen. Oxygen dilution works by pushing the level around the fire below what the fuel needs."},
+{s:"L10",t:"ms",c:2,q:"Which agents do the notes list under extinguishing by oxygen dilution?",o:["Water / steam","CO₂","Halon 1301","Surfactants"],e:"Water/steam and CO₂. Halon 1301 works by chemical flame inhibition."},
+{s:"L10",t:"mc",q:"Which set of minimum oxygen requirements matches the slides?",o:["Wood 4%, acetylene under 4%, hydrocarbon gases 15%","Wood 15%, acetylene 4%, hydrocarbon gases under 4%","Wood 20.9%, acetylene 15%, hydrocarbon gases 4%","Wood under 4%, acetylene 15%, hydrocarbon gases 4%"],e:"4% wood, under 4% acetylene, 15% hydrocarbon gases. Oxygen dilution has to push the level around the fire below these values."},
+{s:"L10",t:"num",a:15,tol:0,u:"% oxygen",q:"Hydrocarbon gases need at least what oxygen concentration to keep burning?",e:"15%. Air is 20.9% oxygen, so a fairly small dilution stops a hydrocarbon gas flame, while wood and acetylene keep going down to about 4%."},
+{s:"L10",t:"mc",q:"Limiting the combustibles kept in a building is an example of extinguishing by:",o:["Fuel removal","Oxygen dilution","Cooling","Chemical flame inhibition"],e:"Fuel removal: limit combustibles in the building. The slides tie this to fire loading."},
+{s:"L10",t:"tf",a:false,q:"Chemical flame inhibition works equally well on flaming and glowing combustion.",e:"False. It applies to the flaming mode only and puts out a glowing fire only after long periods of exposure."},
+{s:"L10",t:"mc",q:"Halon 1301 is:",o:["CBrF₃, bromotrifluoromethane","CO₂, carbon dioxide","CCl₄, carbon tetrachloride","CF₃I, trifluoroiodomethane"],e:"Halon 1301 is CBrF₃, bromo-trifluoro-methane."},
+{s:"L10",t:"mc",q:"How does Halon 1301 extinguish a flame?",o:["It ties up the O*, OH* and H* radicals","It absorbs latent heat as it vaporizes","It dilutes oxygen below 15%","It coats the fuel surface"],e:"It ties up the O*, OH* and H* radicals that keep the flame reaction going."},
+{s:"L10",t:"mc",q:"Why are doors closed and duct openings dampered when a Halon system discharges?",o:["The agent has to build up to its required concentration","To keep the agent from freezing the ducts","To protect the fire department connection","To keep the sprinklers from activating"],e:"A concentration level must develop in the room, so openings are closed off."},
+{s:"L10",t:"ms",c:3,q:"The notes ask “extinguished by whom?” Occupants can put out a fire only under which conditions?",o:["If they are there","If they are trained","If they can detect the fire","If the building is a high-rise","If the fire department approves"],e:"If we are here, if we are trained, and if we can detect the fire."},
+{s:"L10",t:"num",a:5,tol:0,u:"minutes",q:"Alpha Fire Company can have its first people on the scene in how many minutes?",e:"5 minutes. Response time is the limit on fire department extinguishment."},
+{s:"L10",t:"mc",q:"Automatic extinguishment has two parts. Which?",o:["Detection and suppression","Detection and evacuation","Containment and ventilation","Annunciation and egress"],e:"Automatic: detection, then suppression."}
+]},
+{id:"growth",name:"Fire growth and safety analysis",blurb:"Stages of a fire, flame movement, smoke movement, and the three protection objectives.",qs:[
+{s:"L10",t:"mc",q:"What happens in overheat, the first stage of a fire?",o:["Heat energy decomposes the fuel and volatilizes gases","A 10-inch flame becomes established","Flames reach the ceiling","All combustibles in the room burn"],e:"Overheat: heat energy decomposes a fuel and volatilizes the gases. Ignition comes next."},
+{s:"L10",t:"ms",c:3,q:"Ignition needs a heat source strong enough to start self-sustained flaming or smoldering. Which ingredients do the notes list?",o:["Heat flux of sufficient intensity and duration","An ignitable fuel","The heat flux and the fuel coming together","A flame at least 10 inches tall","Oxygen above 20.9%"],e:"Heat flux intensity and duration, ignitable fuel, and the coming together of the two."},
+{s:"L10",t:"mc",q:"Why does a 10-inch flame mark a stage of fire growth?",o:["Feedback changes from mostly conductive and convective to mostly radiative","It is the height at which sprinklers activate","Occupants can no longer put the fire out","It marks full room involvement"],e:"At a 10-inch flame, feedback shifts from primarily conductive and convective to predominantly radiative."},
+{s:"L10",t:"mc",q:"Which stage is defined by a 10-inch flame?",o:["Established burning","Sustained burning","Ignition","Flame at ceiling"],e:"Established burning is a 10-inch flame, where feedback turns predominantly radiative."},
+{s:"L10",t:"mc",q:"A single, isolated stuffed chair burning with a flame 6 ft high is the benchmark for which stage?",o:["Sustained burning","Established burning","Flame at ceiling","Full room involvement"],e:"Sustained burning: fire of a single, isolated, stuffed chair, 6 ft high."},
+{s:"L10",t:"mc",q:"Two stuffed chairs burning is the benchmark for which stage?",o:["Flame at ceiling","Sustained burning","Established burning","Overheat"],e:"Flame at ceiling: fire of two stuffed chairs."},
+{s:"L10",t:"mc",q:"What is the other name for full room involvement, and what defines it?",o:["Flash-over: all combustibles in the room are burning","Backdraft: the room runs out of oxygen","Overheat: the fuel begins to decompose","Churn: the fire stops growing"],e:"Full room involvement (flash-over) is the condition in which all combustibles in the room are burning."},
+{s:"L10",t:"mc",q:"In the fire growth notes, feedback means:",o:["Preheating of a fuel before it burns","The flow switch signal to the alarm panel","Smoke recirculating through the HVAC system","Heat lost to the environment"],e:"Feedback is the preheating of a fuel before it burns."},
+{s:"L10",t:"mc",q:"Which list gives the six stages of fire in order?",o:["Overheat → ignition → established burning → sustained burning → flame at ceiling → full room involvement","Ignition → overheat → sustained burning → established burning → flame at ceiling → full room involvement","Overheat → ignition → sustained burning → established burning → full room involvement → flame at ceiling","Ignition → established burning → overheat → flame at ceiling → sustained burning → full room involvement"],e:"Overheat, ignition, established burning (10-inch flame), sustained burning (one chair, 6 ft flame), flame at ceiling (two chairs), full room involvement (flash-over)."},
+{s:"L10",t:"mc",q:"What does the flame do after it reaches the ceiling?",o:["Spreads out and radiates downward, preheating other fuels","Self-terminates for lack of fuel","Switches to conductive feedback","Cools the smoke layer"],e:"It spreads across the ceiling and radiates downward to preheat other fuels, which drives the room toward full involvement."},
+{s:"L10",t:"ms",c:3,q:"A building fire safety analysis begins by defining the fire safety objective. It addresses the degree of safety afforded to which three things?",o:["People (life safety)","Property","Continuity of operations","Insurance premiums","Construction schedule"],e:"People protection (life safety), property protection, and continuity of operations protection."},
+{s:"L10",t:"mc",q:"Where does fire prevention sit in the analysis?",o:["Before the building is threatened, through public awareness","After detection and before suppression","After full room involvement","Once the fire department arrives"],e:"Fire prevention is public awareness, before the building is threatened."},
+{s:"L10",t:"ms",c:4,q:"Which four items make up the flame movement analysis?",o:["Fire growth hazard potential","Automatic suppression","Manual suppression","Barrier effectiveness","Stack effect","HVAC operation"],e:"Fire growth hazard potential, automatic suppression, manual suppression, barrier effectiveness. Stack effect and HVAC belong to smoke movement."},
+{s:"L10",t:"mc",q:"Fire growth hazard potential asks one key question. Which?",o:["Will the fire self-terminate?","How many occupants are in the room?","What is the U.L. rating of the walls?","How far away is the nearest hydrant?"],e:"Consider whether the fire will self-terminate."},
+{s:"L10",t:"ms",c:6,q:"Which factors set the fire growth hazard potential? Select all six.",o:["Fuel continuity and configuration","Ignitability","Thermal inertia","Surface roughness","Thickness","Surface area","U.L. rating of the walls","Stack effect"],e:"Fuel (continuity and configuration), ignitability, thermal inertia, surface roughness, thickness and surface area."},
+{s:"L10",t:"mc",q:"Automatic suppression is judged by its area of coverage and its ability to:",o:["Contain the fire to the room of origin","Protect only the structural frame","Pressurize the stairs","Replace the fire department"],e:"Area of coverage, and contain to room of origin."},
+{s:"L10",t:"mc",q:"Manual suppression by occupants depends on:",o:["Immediate detection","A fire pump","A Class I standpipe","HVAC shutdown"],e:"It depends on immediate detection."},
+{s:"L10",t:"ms",c:3,q:"Under barrier effectiveness, which items protect openings in a rated barrier?",o:["Fire-rated doors","Fire dampers","Fusible links","Flow switches","Jockey pumps"],e:"Opening protection: fire-rated doors, fire dampers, fusible links."},
+{s:"L10",t:"tf",a:false,q:"Once an assembly carries a U.L. rating, the barrier contains a fire indefinitely.",e:"False. A barrier contains fire for a period of time. The U.L. rating belongs to the tested assembly."},
+{s:"L10",t:"mc",q:"In the structural frame analysis, what does the frame do and how does it fail?",o:["It supports the structure and the barriers, and fails by deflection or collapse","It contains smoke and fails by leakage","It feeds the standpipes and fails by pressure loss","It provides egress and fails by blockage"],e:"The frame supports the structure and supports the barriers. Failure is due to deflection or collapse. It carries a U.L. (Underwriter Laboratory) rating."},
+{s:"L10",t:"ms",c:4,q:"Which forces move smoke through a building?",o:["Buoyancy / pressure","Stack effect","Wind","HVAC","Latent heat","Velocity pressure at the hydrant"],e:"Buoyancy/pressure, stack effect, wind, and HVAC."},
+{s:"L10",t:"ms",c:3,q:"Which three HVAC operations are used against smoke?",o:["Dilution","Pressurization","Exhaust (smoke purge)","Recirculation","Economizer mode"],e:"HVAC operations: dilution, pressurization, and exhaust (smoke purge)."},
+{s:"L10",t:"mc",q:"Smoke movement analysis is concerned with conditions:",o:["Before the building or parts of it become untenable","After structural collapse","Only inside the room of origin","Only after sprinklers operate"],e:"The analysis looks at smoke before the building or parts of the building become untenable."},
+{s:"L10",t:"num",a:530,tol:0,u:"°R",q:"Convert 70°F to degrees Rankine.",e:"°R = °F + 460, so 70°F = 530°R."},
+{s:"L10",t:"num",a:3.13,tol:0.2,u:"×",q:"Air at 70°F is heated by a fire to 1200°F at constant pressure. By what factor does its volume grow (V₂ / V₁)?",e:"P₁V₁/T₁ = P₂V₂/T₂ with constant pressure gives V₂/V₁ = T₂/T₁ = 1660°R / 530°R = 3.13. The notes round it to V₂ ≈ 3 V₁. This expansion is the buoyancy/pressure force."},
+{s:"L10",t:"ms",c:4,q:"People protection (life safety) depends on which factors?",o:["Location of the fire","Location of the people","Physical and mental limitations","Egress","Fire pump horsepower"],e:"Location of fire, location of people, physical and mental limitations, and egress. The notes add that no building can hold up forever."},
+{s:"L10",t:"ms",c:2,q:"What are the two egress objectives in the building and safety analysis?",o:["Evacuation of all occupants","Create areas of refuge","Protect the structural frame","Keep the sprinklers supplied"],e:"1. Evacuation of all occupants. 2. Create areas of refuge. The path runs exit access, exit, exit discharge."},
+{s:"L10",t:"ms",c:3,q:"The building fire safety diagram splits a fire into thermal products (heat, flame) and non-thermal products (gases, smoke). Which three analyses follow from it?",o:["Flame movement analysis","Structural safety analysis","Smoke movement analysis","Hydraulic analysis","Occupancy analysis"],e:"Flame movement analysis, structural safety analysis and smoke movement analysis."},
+{s:"L10",t:"mc",q:"Per the lecture, codes are what, established by society or insurance carriers for the level of risk they are willing to accept?",o:["Minimum requirements","Best practices","Targets for an ideal building","Optional guidelines"],e:"Minimum requirements. The codes lecture repeats it and adds that codes don't cover everything. Your margin note in Lecture 11.1a: the ideal goes further, the code is the minimum."},
+{s:"L10",t:"tf",a:false,q:"Insurance practices and fire protection standards stay fixed once they are adopted.",e:"False. They change constantly to reflect changing building construction, changing hazards and advancing technologies."}
+]},
+{id:"context",name:"Statistics, causes, prevention",blurb:"Fire statistics and major fires from Lecture 10.1, then the numbers, prevention and penetration slides from the guest lecture.",qs:[
+{s:"S10",t:"ms",c:2,q:"What do fire statistics do, per Lecture 10.1?",o:["Pinpoint problems","Formulate solutions","Set insurance premiums","Replace building codes"],e:"Statistics pinpoint problems and formulate solutions."},
+{s:"S10",t:"ms",c:4,q:"Which four losses do fire statistics track?",o:["Life loss","Injuries","Property damage","Continuity of operation","Sprinkler discharge volume","Fire department overtime"],e:"Life loss, injuries, property damage, and continuity of operation."},
+{s:"S10",t:"mc",q:"In the 1978 comparison of countries, which had the highest fire deaths per 100,000 population?",o:["United States, 3.80","Canada, 3.6","Japan, 1.6","Hong Kong, 0.64"],e:"U.S. 3.80, Canada 3.6, Japan 1.6, U.K. 1.5, Hong Kong 0.64. Japan had the most deaths per 1,000 fires at 29.8."},
+{s:"S10",t:"mc",q:"When do most fire deaths occur?",o:["At night, with midnight to 4 AM the worst block at 36.8% of casualties","At midday, with noon to 4 PM at 36.8%","In the evening, with 4 PM to 8 PM at 36.8%","Evenly through the day"],e:"Most deaths occur at night. Midnight to 4 AM carries 36.8% of casualties and 4 AM to 8 AM another 19.2%."},
+{s:"S10",t:"tf",a:false,q:"Non-fatal fires peak at midnight.",e:"False. Non-fatal fires peak at noon. Deaths peak at night."},
+{s:"S10",t:"mc",q:"Which age groups make up the majority of fire casualties?",o:["Ages 0 to 9 and over 60","Ages 10 to 19 and 40 to 60","Ages 20 to 39","Ages 40 to 60"],e:"The majority of casualties are ages 0 to 9 and over 60."},
+{s:"S10",t:"mc",q:"What is the leading cause of death in fires?",o:["Asphyxiation, 74%","Burns, 74%","Mechanical injuries, 74%","Heart attacks, 74%"],e:"Asphyxiation 74%, burns 24%, mechanical injuries 2%, heart attacks 0.5%."},
+{s:"S10",t:"num",a:24,tol:0,u:"%",q:"What percentage of fire deaths are caused by burns?",e:"Burns account for 24%. Asphyxiation is far ahead at 74%."},
+{s:"S10",t:"num",a:35,tol:0,u:"% of casualties",q:"Alcohol is a factor in what share of all fire casualties?",e:"35% of all casualties, on the slide that cites a 0.1% blood alcohol level."},
+{s:"S10",t:"mc",q:"Where do fatal residential fires usually start, and with what?",o:["Bedrooms and living rooms, from smoking material on textile","Kitchens, from cooking oil","Garages, from gasoline","Basements, from heating equipment"],e:"Origin: bedrooms and living rooms. Cause: smoking material on textile."},
+{s:"S10",t:"ms",c:4,q:"What does Lecture 10.1 conclude will save lives?",o:["Early warning","Smoke detectors and alarms","Public awareness","Care with smoking material","Larger fire pumps","Class II hose racks"],e:"Early warning through smoke detectors and alarms, and public awareness, including care with smoking material."},
+{s:"S10",t:"ms",c:4,q:"The Beverly Hills Supper Club fire (Southgate, KY, May 28, 1977) killed 165. Which factors do the slides list for it?",o:["Delayed alarm","Inadequate exits","Overcrowding","Rapid fire spread","Smoke distributed by air handling equipment","Improper electric wiring"],e:"Delayed alarm, inadequate exits, overcrowding and rapid fire spread. Air handling equipment and electric wiring belong to the MGM Grand fire."},
+{s:"S10",t:"ms",c:5,q:"The MGM Grand fire (Las Vegas, November 21, 1980) killed 85. Which factors do the slides list for it?",o:["Improper electric wiring","Rapid fire and smoke spread","Improper protection of vertical openings","Improper enclosed exits","Distribution of smoke by air handling equipment","Overcrowding","Delayed alarm"],e:"Improper electric wiring, rapid fire and smoke spread, improper protection of vertical openings, improper enclosed exits, and distribution of smoke by air handling equipment."},
+{s:"S10",t:"mc",q:"What fed the Station Nightclub fire (West Warwick, RI, February 20, 2003), which killed 100?",o:["Band pyrotechnics ignited cheap polyurethane packing foam used as soundproofing","A kitchen grease fire spread through the exhaust hood","Faulty wiring ignited the roof structure","Smoke spread through the air handling equipment"],e:"Sparks from the band's pyrotechnics ignited low-density polyurethane packaging foam behind the stage. It was highly flammable and unsuitable as acoustic insulation."},
+{s:"S10",t:"mc",q:"What did the Brunswick Building in Chicago (October 17, 2003, 6 died) lack?",o:["An alarm system and a sprinkler system, and it had a locking door system","Exit stairs","A fire department connection","Emergency lighting only"],e:"The 1960 building had no alarm system or sprinkler system, and it did have a locking door system."},
+{s:"S10",t:"mc",q:"Fires started by children playing averaged how many per year from 2005 to 2009?",o:["56,300 fires, with 110 civilian deaths","5,630 fires, with 11 civilian deaths","563,000 fires, with 1,100 civilian deaths","12,500 fires, with 880 civilian deaths"],e:"An average of 56,300 fires a year, with 110 civilian deaths, 880 civilian injuries and $286 million in direct property damage. 12,500 of them were structure fires."},
+{s:"JPA",t:"num",a:1.4,tol:0.05,u:"million",q:"About how many fires occur per year in the U.S.?",e:"About 1.4 million fires per year."},
+{s:"JPA",t:"mc",q:"About how many people die in U.S. building fires each year?",o:["About 3,500, including about 65 firefighters","About 350, including about 65 firefighters","About 12,000, including about 650 firefighters","About 35,000"],e:"About 3,500 deaths per year in buildings, about 65 of them firefighters."},
+{s:"JPA",t:"mc",q:"What share of fire deaths happen in residential buildings?",o:["About 75% (66% houses, 9% apartments)","About 40%","About 25%","About 95%"],e:"About 75% are residential: 66% in houses and 9% in apartments. Lecture 10.1 lists residential fires at 40% of casualties. The guest figure is the one to use."},
+{s:"JPA",t:"mc",q:"Yearly U.S. fire injuries and property damage are about:",o:["12,000 injuries and $20 billion","3,500 injuries and $2 billion","120,000 injuries and $200 billion","1,200 injuries and $20 million"],e:"About 12,000 injuries and about $20 billion in damage per year."},
+{s:"JPA",t:"ms",c:5,q:"Which leading causes of fires appear on the slides? Select all five.",o:["Cooking","Heating equipment","Electrical systems","Smoking","Open flames (candles)","Lightning","Sprinkler failure"],e:"Cooking, heating equipment, electrical systems, smoking, and open flames such as candles."},
+{s:"JPA",t:"sa",q:"The guest slides ask for consideration: why are there so many deaths at home? Answer using Lecture 10.1.",m:"The guest slide leaves it open. Lecture 10.1 supplies the pieces: most deaths occur at night (36.8% between midnight and 4 AM), when people are asleep. Fires start in bedrooms and living rooms from smoking material on textile. 74% of deaths are asphyxiation. The very young (0 to 9) and the old (over 60) are the majority of casualties, and alcohol figures in 35%. Houses also lack the sprinklers, alarms and rated egress that codes require elsewhere, which is why the lecture's conclusion is early warning: smoke detectors, alarms and public awareness."},
+{s:"JPA",t:"ms",c:3,q:"Which prevention measures do the slides list?",o:["Fire-rated and smoke-rated building elements","Limited storage of combustibles","Standard operating procedures","Fire pumps","Standpipes"],e:"Rated building elements, limited storage of combustibles, and standard operating procedures."},
+{s:"JPA",t:"mc",q:"In practice, prevention is largely the responsibility of:",o:["Architects and owners","The sprinkler contractor","The fire department","MEP engineers alone"],e:"Largely the responsibility of architects and owners."},
+{s:"JPA",t:"mc",q:"Where does the building code cover penetrations of rated construction?",o:["Chapter 7","Chapter 9","NFPA 14","NFPA 22"],e:"Penetrations are covered in Chapter 7. The slide's advice: read it, know it, and read it again each code cycle."},
+{s:"JPA",t:"sa",q:"What do the slides say about your own role on a design team when it comes to penetrations and code interpretation?",m:"You may need to be the expert on the design team. Chapter 7 gets updated, so reread it each code cycle and whenever an interpretation is difficult. Many jurisdictions have competent AHJs but some do not, and you are ethically required to protect public safety."},
+{s:"JPA",t:"mc",q:"The slides say one party's opinion “trumps all” on hazard classification. Who?",o:["The AHJ (authority having jurisdiction)","The architect","The insurance carrier","The sprinkler contractor"],e:"AHJ opinion trumps all. The slides repeat “check with AHJ” for hydrant distance, hose valve landings and standpipe pressure."}
+]},
+{id:"standpipes",name:"Standpipes",blurb:"Purpose, where required, classes, flow, riser sizing, components and hose valves.",qs:[
+{s:"L11",p:1,t:"mc",q:"How do the notes distinguish the two types of water suppression?",o:["A standpipe puts water at the location it is needed. A sprinkler detects, notifies and applies the agent","A standpipe detects and notifies. A sprinkler puts water where it is needed","Both detect the fire and apply the agent","A standpipe is automatic and a sprinkler is manual"],e:"Standpipe: puts water at the location it is needed. Sprinkler: detect, notify, and apply agent."},
+{s:"L11",p:1,t:"mc",q:"For standpipes, what do the IBC and NFPA 14 each tell you?",o:["IBC: where you need them. NFPA 14: how you build them","IBC: how you build them. NFPA 14: where you need them","IBC: flow test procedure. NFPA 14: sprinkler spacing","Both cover only pump sizing"],e:"IBC says where you need them. NFPA 14 says how you build them."},
+{s:"L11",p:1,t:"mc",q:"First-aid hoses are:",o:["1½ in., for building occupants until the fire department arrives","2½ in., for firefighters","1½ in., for firefighters only","2½ in., for building occupants"],e:"First-aid hoses are 1½ in. and are used by building occupants until the fire department arrives."},
+{s:"L11",p:1,t:"ms",c:3,q:"What are second-aid (2½ in.) hoses and valves for? Select all that apply.",o:["Firefighters fighting the fire within the building","Cases where fighting the fire from the street is unfeasible","Bringing water into the building where it is needed","Occupant use before the fire department arrives"],e:"They are for firefighters inside the building, when fighting from the street is unfeasible, and they bring water in to where it is needed."},
+{s:"L11",p:1,t:"num",a:30,tol:0,u:"ft",q:"A standpipe is required when the highest floor is more than how many feet above the fire department's vehicle access?",e:"30 ft. Your margin note: the 3rd floor is about 30 ft above grade."},
+{s:"L11",p:1,t:"num",a:400,tol:0,u:"ft",q:"A standpipe is also required when any area within the building is more than how many feet from the fire department's vehicle access?",e:"400 ft from the fire department's vehicle access."},
+{s:"JPA",t:"ms",c:4,q:"Per the guest slides, when are standpipes needed? Select all that apply.",o:["An occupied level more than 30 ft above or below fire department access","Multi-level parking garages","Malls","Unsprinklered assembly spaces","Every building that has a fire pump","Every light-hazard office"],e:"Occupied level more than 30 ft above or below access, multi-level parking garages, malls, and unsprinklered assembly spaces."},
+{s:"L11",p:2,t:"mc",q:"What makes a standpipe a dry standpipe?",o:["A permanent water connection does not exist","The pipe holds nitrogen under pressure","Water pressure is maintained all the time","Only occupants may use it"],e:"Dry standpipe: a permanent water connection does not exist. A wet standpipe has water pressure maintained all the time. Lecture 11.1a calls dry standpipes not recommended. The guest slides, which govern, use manual dry standpipes in parking garages."},
+{s:"L11",p:2,t:"mc",q:"Which standpipe class is for fire department use only, with no hose provided?",o:["Class I","Class II","Class III","Class IV"],e:"Class I is for fire department use only and has no hose."},
+{s:"L11",p:2,t:"mc",q:"A Class III standpipe serves:",o:["Both the fire department and occupants","Occupants only","The fire department only","Sprinkler zones only"],e:"Class II is for occupant use. Class III serves both the fire department and occupants."},
+{s:"JPA",t:"mc",q:"Per the guest slides, which standpipe class is “really all that is done now”, and what are its connection size and pressure?",o:["Class I: 2.5 in. connections, 100 psi","Class II: 1.5 in. connections, 65 psi","Class III: 2.5 in. connections, 65 psi","Class I: 1.5 in. connections, 100 psi"],e:"Class I, fire department use, 2.5 in. connections at 100 psi. Class II (occupant use, 1.5 in., 65 psi) is really not done now."},
+{s:"L11",p:2,t:"num",a:500,tol:0,u:"GPM",q:"What flow is required for the first standpipe?",e:"500 GPM for the first standpipe."},
+{s:"L11",p:2,t:"num",a:250,tol:0,u:"GPM",q:"How much flow does each additional standpipe add?",e:"250 GPM for each additional standpipe."},
+{s:"JPA",t:"mc",q:"What is the maximum standpipe flow demand?",o:["1,000 GPM in a sprinklered building and 1,250 GPM in a non-sprinklered one","2,500 GPM, reached at 9 standpipes","500 GPM sprinklered and 1,000 GPM non-sprinklered","1,250 GPM sprinklered and 1,000 GPM non-sprinklered"],e:"Guest slides: 500 GPM minimum, 250 GPM per riser, 1,000 GPM max for a sprinklered building, 1,250 GPM max for a non-sprinklered one. Lecture 11.1a shows 2,500 GPM at 9 standpipes. The guest slides are the ones to follow."},
+{s:"JPA",t:"tf",a:false,q:"Standpipe flow demand is added on top of the sprinkler demand when sizing the water supply.",e:"False. The slide states this flow demand does not add to the sprinkler demand."},
+{s:"L11",p:2,t:"mc",q:"What riser size do the notes give for buildings under 75 ft and over 75 ft?",o:["4 in. under 75 ft, 6 in. over 75 ft","6 in. under 75 ft, 4 in. over 75 ft","2½ in. under 75 ft, 4 in. over 75 ft","4 in. for both"],e:"Under 75 ft: 4 in. Over 75 ft: 6 in."},
+{s:"L11",p:2,t:"mc",q:"Where do standpipes go?",o:["In every stair","In every corridor","Only in the fire pump room","In one stair per building"],e:"Put a standpipe in every stair. The guest slides agree: risers go within each required egress stair."},
+{s:"L11",p:2,t:"mc",q:"What are the two water sources of a standpipe system?",o:["The water supply and the siamese (fire department connection)","The jockey pump and the fire pump","The domestic main and a roof tank","The test hydrant and the test header"],e:"Two sources: the water supply plus the siamese, which is the fire department connection fed by the pumper truck."},
+{s:"L11",p:2,t:"mc",q:"What does the check valve at the siamese do?",o:["Keeps water from exiting at the siamese, like a one-way door","Prevents freezing","Reduces pressure to 85 psi","Detects flow and signals the alarm"],e:"Check valves prevent water from exiting at the siamese. Your margin note: like a door, one way."},
+{s:"L11",p:2,t:"mc",q:"What is the auto ball drip for?",o:["It drains the line so it does not freeze","It maintains system pressure","It stops backflow into the city main","It signals a closed valve"],e:"Auto ball drip prevents freezing. Your note labels it as a drain."},
+{s:"L11",p:2,t:"ms",c:3,q:"Which requirements apply to the siamese?",o:["Must be labeled","Must be visible","18 in. to 42 in. above grade","Located inside the stair enclosure","At least 6 ft above grade"],e:"Labeled, visible, and 18 in. to 42 in. above grade."},
+{s:"L11",p:4,t:"mc",q:"What pressures does the standpipe riser diagram call for?",o:["100 psi at the top, reduced to 85 psi max at each floor","85 psi at the top, 100 psi max at each floor","65 psi at the top, 100 psi max at each floor","100 psi at every outlet"],e:"100 psi at the top. Pressure is reduced at each floor to 85 psi max."},
+{s:"L11",p:3,t:"sa",q:"The stair sketch shows a hose cabinet recessed into the stair wall and flags a problem. What is the problem, and where does the 2½ in. valve go?",m:"Recessing the cabinet cuts into the rated stair wall, so the wall will not last its 2 hours at that spot. The 2½ in. valve comes off the riser at the intermediate stair landing, with the 1½ in. hose in the cabinet."},
+{s:"JPA",t:"ms",c:6,q:"Where do the guest slides locate fire hose valves? Select all that apply.",o:["Stair landings (or intermediate landings, check with AHJ)","Horizontal exits","Exit passageways","Mall entrances","Stages","Roofs of high-rises, to serve adjacent buildings","Inside elevator cabs","Fire pump rooms"],e:"Stair landings, horizontal exits, exit passageways, mall entrances, stages, roofs for high-rise, and anywhere else needed to reach the building with a 200 ft hose."},
+{s:"JPA",t:"num",a:200,tol:0,u:"ft",q:"Hose valves are placed so the whole building can be reached with a hose of what length?",e:"As required so you can reach the building with a 200 ft hose."},
+{s:"JPA",t:"mc",q:"Which building type do the guest slides pair with a manual, dry standpipe?",o:["Parking garages","High-rises","Low-rise and mid-rise buildings","Malls"],e:"Manual and dry: often parking garages. Manual and wet: low-rise and mid-rise where standpipes are still required. Automatic: high-rise."},
+{s:"JPA",t:"mc",q:"How many fire department connections does a high-rise standpipe system need?",o:["Two","One","Four","One per stair"],e:"Two fire department connections for high-rise buildings."},
+{s:"JPA",t:"mc",q:"What pressure is needed at the most remote standpipe outlet?",o:["100 psi, although the AHJ can change it and some fire departments prefer 65 psi","65 psi in every case","85 psi maximum","140% of design pressure"],e:"100 psi at the most remote outlet, subject to modification by the AHJ. Sometimes 65 psi is required depending on fire department preferences."},
+{s:"JPA",t:"tf",a:true,q:"A standpipe riser often doubles as a fire main that feeds sprinkler zone valve assemblies.",e:"True. Standpipes often double as a fire main and support sprinkler zone valve assemblies."}
+]},
+{id:"supply",name:"Water supply, flow test, fire pumps",blurb:"Hydrant flow tests, required pressure, pump sizing and what the pump room needs.",qs:[
+{s:"L11",p:5,t:"mc",q:"In a hydrant flow test, where is static pressure read?",o:["At hydrant 1 with hydrant 2 closed","At hydrant 2 with hydrant 1 closed","At hydrant 2 while it is flowing","At the fire pump discharge"],e:"Static pressure is read at hydrant 1, with hydrant 2 closed."},
+{s:"L11",p:5,t:"mc",q:"How is the residual reading taken?",o:["Read pressure at hydrant 1 while hydrant 2 flows, and convert the velocity pressure at 2 to GPM","Read pressure at hydrant 2 with both hydrants closed","Read velocity pressure at hydrant 1 and static pressure at hydrant 2","Close both hydrants and read the main"],e:"Residual pressure is in psi at a stated GPM: read pressure at 1, measure velocity pressure at 2 and convert it to GPM. Your note: velocity pressure is a surrogate for GPM."},
+{s:"L11",p:5,t:"num",a:2,tol:0,u:"standpipes",q:"The worked example uses a required flow of 750 GPM. How many standpipes does that represent?",e:"500 GPM for the first plus 250 GPM for the second gives 750 GPM for 2 standpipes."},
+{s:"L11",p:6,t:"ms",c:4,q:"Total required pressure is the sum of which four items?",o:["100 psi at the top","Static head (building height × 0.433 psi/ft)","Pipe loss","Equipment loss","Velocity pressure at the hydrant","Churn pressure"],e:"100 psi at top, head, pipe loss and equipment loss."},
+{s:"L11",p:6,t:"num",a:0.433,tol:0.005,u:"psi/ft",q:"How much pressure does each foot of building height cost?",e:"Head = building height (ft) × 0.433 psi/ft."},
+{s:"L11",p:6,t:"num",a:158,tol:0,u:"psi",q:"Worked example: 100 psi at the top, 38 psi of head, 10 psi pipe loss, 10 psi equipment loss. What is the total required pressure?",e:"100 + 38 + 10 + 10 = 158 psi. The 38 psi of head corresponds to a building about 88 ft tall."},
+{s:"L11",p:6,t:"mc",q:"When does the system need a fire pump?",o:["When total required pressure is greater than available pressure","When available pressure is greater than required pressure","Whenever the building has sprinklers","Only when the building is taller than 75 ft"],e:"If required exceeds available, you need a pump. If required is less than available, no pump. In the example 158 psi is greater than 25 psi."},
+{s:"L11",p:6,t:"num",a:133,tol:0,u:"psi",q:"The lecture's pump calculation takes 158 psi required and 25 psi available at the required flow. What pressure must the fire pump add?",e:"Fire pump pressure = required − available = 158 − 25 = 133 psi."},
+{s:"L11",p:6,t:"mc",q:"Which formula gives fire pump brake horsepower?",o:["BHP = (Q × P) / (1710 × E)","BHP = (Q × P × E) / 1710","BHP = (Q × 1710) / (P × E)","BHP = (Q × 0.433) / (1710 × E)"],e:"BHP = Q × P / (1710 × E), with Q in GPM, P in psi and E the efficiency, 50 to 75%."},
+{s:"L11",p:6,t:"num",a:77.8,tol:0.5,u:"BHP",q:"Find the brake horsepower for 750 GPM at 133 psi with 75% efficiency.",e:"750 × 133 / (1710 × 0.75) = 99,750 / 1,282.5 = 77.8 BHP."},
+{s:"L11",p:6,t:"mc",q:"Which standard motor size fits a 77.8 BHP pump?",o:["100 HP","75 HP","60 HP","125 HP"],e:"75 HP falls short, so the slide goes to 100 HP, the next bigger size."},
+{s:"L11",p:6,t:"sa",q:"Fire pump efficiency is only 50 to 75%. What does your margin note say about why that is accepted?",m:"The lighter the pump, the more efficient it is, so a less efficient pump is the heavier and more reliable one. A fire pump runs rarely and has to work when called."},
+{s:"L11",p:4,t:"mc",q:"Starting at the street main, which order matches the riser diagram?",o:["Street main → post indicator valve → backflow preventer → fire pump with jockey pump in parallel → check valve → risers","Street main → fire pump → backflow preventer → post indicator valve → risers","Street main → check valve → jockey pump → post indicator valve → risers","Street main → siamese → fire pump → backflow preventer → risers"],e:"Water enters through the post indicator valve, then the backflow preventer (double-check valve), then the fire pump with the jockey pump piped around it, then a check valve to the risers. The siamese ties in downstream through its own check valve."},
+{s:"JPA",t:"mc",q:"What does the jockey pump do?",o:["Runs periodically to maintain system pressure","Does the main job when flow is needed","Drains the test header","Boosts the fire department connection"],e:"The jockey pump runs periodically and maintains system pressure. The fire pump does the main job when flow is needed. Your 11.1a sketch notes it guarantees pressure."},
+{s:"JPA",t:"mc",q:"What drives a fire pump?",o:["Diesel, or electric with a generator, and almost always electric","Always a diesel engine","Electric only, with no backup power","Steam turbine"],e:"Diesel or electric with generator, almost always electric. Lecture 11.1a lists a diesel engine. The guest slides are the ones to follow."},
+{s:"JPA",t:"num",a:140,tol:0,u:"% of design pressure",q:"At churn (0% flow), what is the maximum pressure a fire pump may produce?",e:"0% flow and a maximum of 140% of design pressure. That point is called churn."},
+{s:"JPA",t:"num",a:65,tol:0,u:"% of design pressure",q:"At 150% of design flow, a fire pump must still deliver what share of design pressure?",e:"150% flow at 65% of design pressure. The third point is 100% flow at design pressure."},
+{s:"JPA",t:"ms",c:5,q:"What do the slides call for in and around the fire pump room? Select all that apply.",o:["Dedicated cooling on emergency power","An easily accessible room","A floor drain for the case temperature relief valve","A test header for annual testing","Power that is often dedicated and kept out of the building","A return-air plenum connection","A Class II hose rack"],e:"Controller, dedicated power that often does not run through the building, dedicated cooling with emergency power, an easily accessible room, a floor drain, and a test header for annual testing."},
+{s:"JPA",t:"mc",q:"A sprinkler system is often fed from municipal potable water. What does that require?",o:["Backflow prevention","A deluge valve","A pressure-reducing valve","A draft tank"],e:"Backflow prevention for municipal potable water, sometimes with a test header."},
+{s:"JPA",t:"mc",q:"What is the fire department connection for?",o:["It is a second water source once the fire department arrives","It is the primary water source","It drains the sprinkler zone","It tests the flow switch"],e:"The FDC is the second water source once the fire department arrives."},
+{s:"JPA",t:"mc",q:"How long must the water supply last for each hazard class?",o:["Light 30 min, ordinary 60 to 90 min, extra 90 to 120 min","Light 60 min, ordinary 90 min, extra 180 min","Light 15 min, ordinary 30 min, extra 60 min","120 min for every hazard"],e:"LH 30 minutes, OH 60 to 90 minutes, EH 90 to 120 minutes."},
+{s:"JPA",t:"mc",q:"Which standard covers water tanks for private fire protection?",o:["NFPA 22","NFPA 24","NFPA 13","NFPA 14"],e:"NFPA 22 covers water tanks. NFPA 24 covers private fire service mains and their appurtenances. NFPA 1 is the Fire Code."},
+{s:"JPA",t:"mc",q:"NFPA 24 covers:",o:["Installation of private fire service mains and their appurtenances","Water tanks for private fire protection","Installation of standpipes","Sprinkler system design"],e:"NFPA 24: Standard for the Installation of Private Fire Service Mains and Their Appurtenances."},
+{s:"JPA",t:"num",a:400,tol:0,u:"ft",q:"With a municipal main as the source, a hydrant must be within how many feet (subject to the AHJ)?",e:"Within 400 ft, but check with the AHJ. Place it where the truck will be and where the FDC is."},
+{s:"JPA",t:"ms",c:3,q:"Which possible water sources do the slides list?",o:["Municipal utility water main","Draft tank","Hydropneumatic tank","Domestic water heater","Cooling tower basin"],e:"Municipal main (basically unlimited flow), draft tank, or hydropneumatic tank. Each must meet flow and pressure requirements."},
+{s:"JPA",t:"mc",q:"What hose stream allowance is added for fire department use?",o:["250 GPM for ordinary hazard, 500 GPM for extra hazard","500 GPM for ordinary hazard, 250 GPM for extra hazard","100 GPM for ordinary hazard, 250 GPM for extra hazard","250 GPM for every hazard"],e:"OH 250 GPM and EH 500 GPM. The hose stream flow rate accounts for fire department use."},
+{s:"JPA",t:"ms",c:2,q:"Which two conditions each add 30% to the sprinkler flow rate?",o:["A dry pipe system","A ceiling sloped more than 4:12","Quick-response heads","Pendent heads","A wet pipe system"],e:"Flow modifiers: dry pipe 30%, and sloped ceilings greater than 4:12 pitch 30%."},
+{s:"JPA",t:"ms",c:5,q:"Which items make up the system pressure requirement on the slides?",o:["Backflow prevention and pipe fittings","Pipe friction","Elevation change","Sprinkler pressure drop, based on K-factor","Safety margin required by the jurisdiction","Churn pressure"],e:"Backflow prevention and fittings, pipe friction, elevation change (it is an open system), sprinkler pressure drop from the K-factor, and the safety margin the jurisdiction requires."}
+]},
+{id:"sprinklers",name:"Sprinkler components, heads, system types",blurb:"Valves and switches, piping, head anatomy, and wet, dry, pre-action and deluge systems.",qs:[
+{s:"L11",p:7,t:"num",a:12,tol:0,u:"in.",q:"By definition, sprinkler piping is horizontal piping located within how many inches of the ceiling?",e:"Horizontal piping located 12 in. or less from the ceiling, serving heads that emit a fine water spray when high temperatures are detected."},
+{s:"L11",p:7,t:"ms",c:2,q:"What are the two objectives of a sprinkler system?",o:["Control fires","Notify the fire department and occupants","Pressurize the exit stairs","Replace the standpipes"],e:"Control fires, and notify the fire department and occupants."},
+{s:"L11",p:7,t:"mc",q:"Which document is the sprinkler design standard?",o:["NFPA 13","NFPA 14","NFPA 22","NFPA 1"],e:"IBC says where sprinklers are required. NFPA 13 is the design standard."},
+{s:"L11",p:10,t:"mc",q:"What does OS&Y stand for in the notes?",o:["Open stem and yoke","Outside supply and yard","Operating shaft and yield","Open service and yoke"],e:"The notes call the shut-off valve OS&Y, open stem and yoke. The exposed stem shows at a glance whether the valve is open. You will also see it written outside screw and yoke."},
+{s:"L11",p:10,t:"mc",q:"What does the tamper switch do?",o:["Monitors that the OS&Y valve stays open and reports to the fire alarm system","Detects water flow in the zone","Prevents backflow to the city main","Opens the pre-action valve"],e:"Tamper switch: keep the OS&Y valve open. It is connected to the fire alarm system."},
+{s:"L11",p:10,t:"mc",q:"What does the flow switch do?",o:["Detects flow and reports it to the fire alarm system","Holds the valve open","Maintains system pressure","Shuts off the water when the temperature drops"],e:"Flow switch: detects flow. It is connected to the fire alarm system."},
+{s:"L11",p:10,t:"num",a:12,tol:0,u:"heads",q:"The branch on each floor ties in to the fire alarm (FA). That is required of a system with more than how many heads?",e:"FA required of a system with more than 12 heads. The flow switch and the tamper switch on the branch both connect to the fire alarm system."},
+{s:"L11",p:10,t:"mc",q:"The backflow preventer shown in the notes is what type?",o:["Double-check valve","Single swing check","Pressure-reducing valve","Deluge valve"],e:"System components: water supply, post indicator valve, and backflow preventer (double-check valve)."},
+{s:"JPA",t:"ms",c:5,q:"What does a zone valve assembly do? Select all that apply.",o:["Receives water from the fire main","Distributes water to branch piping and sprinklers","Detects flow and ties in with the fire alarm system","Serves as the drain point for the zone","Serves as the test point for flow detection","Boosts pressure for upper floors"],e:"It receives water from the fire main, distributes it to the branches, detects flow, and serves as the drain and test location for the zone."},
+{s:"JPA",t:"tf",a:false,q:"Sprinkler heads may be fed directly from the fire main.",e:"False. Fire mains carry water from the service entrance to the zone valve assemblies, and no sprinklers are fed directly from them. They may also serve as standpipes."},
+{s:"L11",p:12,t:"mc",q:"In what order does water pass through the sprinkler piping network?",o:["Supply main → cross main → branch piping","Cross main → supply main → branch piping","Branch piping → cross main → supply main","Supply main → branch piping → cross main"],e:"Supply main, cross main, then branch piping."},
+{s:"L11",p:12,t:"num",a:8,tol:0,u:"heads",q:"What is the maximum number of heads on a branch line?",e:"Branch piping: 8 heads max. Lecture 12.1 says the same thing as 8 sprinklers allowed on either side of the cross main."},
+{s:"L11",p:12,t:"ms",c:4,q:"Which pipe materials and fittings do the notes list for sprinkler piping?",o:["Black iron","Copper","Screw fittings","Mechanical fittings","Cast-iron hub and spigot","Galvanized sheet-metal duct"],e:"Black iron and copper pipe, with screw fittings and mechanical fittings."},
+{s:"JPA",t:"mc",q:"What temperature rating is typical for sprinkler heads?",o:["135°F to 155°F","70°F to 100°F","212°F to 250°F","500°F to 1,200°F"],e:"Typical use is 135 to 155°F, with higher ratings for hot locations. Lecture 11.1a gives an operating range of 135 to 170°F. The guest slides are the ones to follow."},
+{s:"JPA",t:"ms",c:4,q:"Where do the slides call for heads with higher temperature ratings?",o:["Attics","Kitchens","Skylights","Boiler rooms","Open offices","Corridors"],e:"Higher temperatures for attics, kitchens, skylights, boiler rooms and similar spaces."},
+{s:"L11",p:12,t:"tf",a:false,q:"In a wet pipe system, when one head activates every head in the zone discharges.",e:"False. Heads are typically activated individually by their own fusible link. The guest slide title says it: not like on TV."},
+{s:"L11",p:12,t:"mc",q:"Once a head opens, water runs until:",o:["Someone shuts it off","The fusible link resets","The room drops below 135°F","The jockey pump stops"],e:"Water runs until it is shut off. Heads are one-time use and must be replaced."},
+{s:"L11",p:12,t:"ms",c:3,q:"Which three parts are labeled on the sprinkler head sketch?",o:["Deflector","Fusible link","Nozzle","Yoke","Tamper switch"],e:"Deflector, fusible link and nozzle."},
+{s:"L11",p:12,t:"mc",q:"Which of these is not a sprinkler head type listed in the notes?",o:["Siamese","Upright","Pendent","Sidewall"],e:"The types are upright, pendent, sidewall, flow control, concealed and semi-concealed. A siamese is the fire department connection."},
+{s:"L11",p:12,t:"mc",q:"What is special about a flow-control head?",o:["It closes automatically when the temperature decreases, although it has failed occasionally","It opens every head on the branch at once","It limits discharge to 5.6 GPM","It sits behind a cover plate"],e:"Flow control: closes automatically when temperature decreases. Failed occasionally."},
+{s:"L11",p:12,t:"mc",q:"In Q = K√P, what does each term stand for?",o:["Q is flow in GPM, P is pressure in psi, K depends on the orifice size","Q is pressure in psi, P is power, K is 1710","Q is flow in GPM, P is pipe diameter, K is a friction coefficient","Q is heat in BTU, P is pressure, K is conductivity"],e:"Q in GPM, P in psi, and K a factor based on the size of the orifice, typically ½ in."},
+{s:"JPA",t:"mc",q:"What K-factors do the guest slides give?",o:["5.6 is typical, 8.0 for some ordinary or extra hazard","8.0 is typical, 5.6 for extra hazard","1.85 is typical, 4.87 for extra hazard","0.433 for every head"],e:"K = 5.6 is typical. K = 8.0 serves some OH or EH with more flow per head, and higher values are available."},
+{s:"JPA",t:"mc",q:"What are the two response categories for heads?",o:["Standard and quick","Wet and dry","Upright and pendent","Single and double interlock"],e:"Response: standard or quick."},
+{s:"L11",p:13,t:"ms",c:4,q:"Which statements describe a wet pipe system?",o:["Piping is always filled with water","It is the most common type","It can freeze","Discharge is immediate and the system is simple","It needs quick-opening devices","Its heads are always open"],e:"Wet pipe: always filled with water, most common, freezing potential, immediate discharge and simple."},
+{s:"L11",p:13,t:"ms",c:4,q:"Which statements describe a dry pipe system?",o:["Piping is filled with compressed air","Quick-opening devices are required","Piping must be pitched to drain","It is used in unheated spaces","It is the most common type","Its heads are always open"],e:"Dry pipe: compressed air in the pipe, a releasing head lets the air escape, water fills the pipe, quick-opening devices required, piping pitched to drain, used in unheated space."},
+{s:"JPA",t:"mc",q:"Where does the gas in a dry pipe system come from?",o:["An air compressor, nitrogen or another source","Halon 1301 cylinders","Steam from the boiler","CO₂ extinguishers"],e:"Pipes are full of gas under pressure, from an air compressor, nitrogen, or another source."},
+{s:"L11",p:13,t:"mc",q:"Which sequence describes a pre-action system in Lecture 11.1a?",o:["A smoke detector opens the pre-action valve, the pipes fill and the alarm sounds, then water leaves only through heads whose fusible link has released","A head opens, air escapes, then water fills the pipe","A detection system opens the valve and every head discharges","Water is always in the pipe and flows when a head opens"],e:"Pre-action piping holds compressed air. A smoke detector activates the pre-action valve to fill the system and sound the alarm. Individual heads discharge when their fusible link releases."},
+{s:"L12",p:1,t:"mc",q:"The Lecture 12.1 note on pre-action says water discharges only when:",o:["The smoke detector trips and the glass part of the head breaks","The smoke detector trips, with nothing else needed","A head breaks, with nothing else needed","Someone pulls a manual station"],e:"For pre-action you need the smoke detector and the glass part to break."},
+{s:"L11",p:13,t:"ms",c:2,q:"Where do the notes say to use pre-action?",o:["Computer facilities","Libraries","Unheated loading docks","Atrium water curtains"],e:"Use where accidental discharge may be costly: computer facilities, libraries and the like."},
+{s:"JPA",t:"mc",q:"In a double-interlock pre-action system, water enters the piping when:",o:["An alarm event and a head activation both occur","An alarm event occurs alone","A head activates alone","The jockey pump starts"],e:"Two events must occur: an alarm event and head activation, which releases the air pressure. Use it where an accidental system fill is catastrophic."},
+{s:"JPA",t:"mc",q:"When is single-interlock pre-action the right choice?",o:["Where speed matters more and an accidental fill is not catastrophic","Where an accidental fill is catastrophic","Only in unheated spaces","Where every head must discharge at once"],e:"Single interlock: an alarm event fills the piping, and water flows once a head activates. Use where speed is more important and accidental system fill is not catastrophic."},
+{s:"L11",p:13,t:"ms",c:4,q:"Which statements describe a deluge system?",o:["Sprinkler heads are open","Piping is open to air","An area fire detection system activates the deluge valve","Water discharges from every head at 100% flow","Heads open one at a time by fusible link","Piping holds compressed air"],e:"Deluge: open heads, piping open to air, an area detection system opens the deluge valve, and every head discharges."},
+{s:"L11",p:13,t:"mc",q:"Where is a deluge system used?",o:["Where rapid fire spread is possible, and to make a water curtain at atriums","Computer rooms","Unheated attics","Typical offices"],e:"Used where rapid spread of fire is possible, and to create a water curtain at atriums."},
+{s:"L11",p:13,t:"mc",q:"An unheated loading dock needs sprinklers. Which system type fits?",o:["Dry pipe","Wet pipe","Deluge","Single-interlock pre-action"],e:"Dry pipe is used in unheated space because a wet system has freezing potential. The West 1 single-line diagram shows a 4 in. dry sprinkler valve serving the loading dock."},
+{s:"JPA",t:"mc",q:"A rare-book archive cannot tolerate water in the piping unless there is a real fire. Which system type fits best?",o:["Double-interlock pre-action","Wet pipe","Deluge","Dry pipe"],e:"Double interlock is for places where an accidental system fill is catastrophic."},
+{s:"L11",p:14,t:"ms",c:3,q:"Which three ways of protecting an atrium do the notes list?",o:["Deluge sprinklers","Glass with sprinklers at 6 ft on center on the side with a walking surface","Rolling fire shutters","Class II hose racks","Halon flooding"],e:"Deluge sprinklers, glass with sprinklers at 6 ft on center on the side with a walking surface, or rolling fire shutters."},
+{s:"JPA",t:"mc",q:"How do the slides describe the fire department connection?",o:["Wall-mounted or site-mounted, with the number of connections set by the required flow","Always wall-mounted with exactly two inlets","Located inside the fire pump room","Located on the roof"],e:"Wall-mounted or site-mounted, with a different number of connections for different required flow rates."}
+]},
+{id:"design",name:"Hazard classes, placement, pipe sizing, hydraulics",blurb:"Occupancy classification, head spacing, the pipe schedule method and density/area design.",qs:[
+{s:"L12",p:1,t:"mc",q:"What does class of occupancy relate to?",o:["Sprinkler systems and their water supply","Egress width","Structural fire rating","Standpipe class"],e:"Class of occupancy relates to sprinkler systems and their water supply."},
+{s:"L12",p:1,t:"ms",c:3,q:"Which are light hazard occupancies?",o:["Churches","Schools","Offices","Laundries","Library stacks","Repair garages"],e:"Light hazard means quantity and combustibility of contents are low: churches, schools, offices."},
+{s:"L12",p:1,t:"mc",q:"How is an automobile parking garage classified?",o:["Ordinary hazard, Group I","Light hazard","Ordinary hazard, Group III","Extra hazard, Group I"],e:"Ordinary hazard Group I: automobile parking garages, electronic plants, laundries, restaurant service areas."},
+{s:"L12",p:1,t:"mc",q:"How are library stacks classified?",o:["Ordinary hazard, Group II","Light hazard","Ordinary hazard, Group I","Extra hazard, Group II"],e:"Ordinary hazard Group II: chemical plant, machine shop, printing and publishing, library stacks."},
+{s:"L12",p:1,t:"mc",q:"Paper and pulp mills and repair garages fall in which class?",o:["Ordinary hazard, Group III","Ordinary hazard, Group I","Extra hazard, Group I","Light hazard"],e:"Ordinary hazard Group III: paper and pulp mill, repair garages."},
+{s:"L12",p:1,t:"mc",q:"Die casting and metal extruding fall in which class?",o:["Extra hazard, Group I","Extra hazard, Group II","Ordinary hazard, Group II","Ordinary hazard, Group III"],e:"Extra hazard Group I: die casting, metal extruding."},
+{s:"L12",p:1,t:"ms",c:4,q:"Which occupancies are extra hazard, Group II?",o:["Asphalt saturating","Flammable liquid spraying","Solvent cleaning","Mobile or modular home manufacturing","Laundries","Machine shop"],e:"Extra hazard Group II: asphalt saturating, flammable liquid spraying, solvent cleaning, mobile or modular home manufacturing."},
+{s:"L12",p:1,t:"ms",c:4,q:"Which occupancies are ordinary hazard, Group I?",o:["Automobile parking garages","Electronic plant","Laundries","Restaurant service areas","Chemical plant","Printing and publishing"],e:"Group I: parking garages, electronic plant, laundries, restaurant service areas. Chemical plant and printing are Group II."},
+{s:"JPA",t:"mc",q:"On the guest slides, wood machining and textile manufacturing are examples of:",o:["Extra hazard, Group 1","Ordinary hazard, Group 2","Extra hazard, Group 2","Light hazard"],e:"Extra hazard Group 1: wood machining, textile manufacturing. Group 2: solvents. The slides also put offices in light hazard, parking garages and restaurants in OH Group 1, and libraries and chem labs in OH Group 2."},
+{s:"L12",p:2,t:"mc",q:"What is the coverage per head for light hazard with a smooth ceiling, hydraulically calculated?",o:["225 ft², heads 15 ft on center","130 ft², heads 11.4 ft on center","100 ft², heads 10 ft on center","90 ft²"],e:"Light hazard: 15 ft on center, A = 225 ft². The note adds that the head sprays a 17.5 ft circle to cover the full square."},
+{s:"L12",p:2,t:"num",a:130,tol:0,u:"ft²",q:"What is the coverage per head for ordinary hazard?",e:"130 ft², which is 11.4 ft × 11.4 ft."},
+{s:"L12",p:2,t:"num",a:100,tol:0,u:"ft²",q:"What is the coverage per head for high-pile storage?",e:"100 ft², a 10 ft × 10 ft grid."},
+{s:"L12",p:2,t:"num",a:90,tol:0,u:"ft²",q:"What is the coverage per head for extra hazard?",e:"90 ft²."},
+{s:"L12",t:"mc",q:"The slides cite the 1953 Hydramatic fire in Livonia, Michigan. What was it?",o:["The biggest industrial fire in history, a $50 million loss","A high-rise fire that led to stair pressurization","A nightclub fire caused by pyrotechnics","A hotel fire spread by air handling equipment"],e:"1953 Hydramatic fire, Livonia, Michigan: biggest industrial fire in history, $50 million loss."},
+{s:"L12",p:2,t:"mc",q:"Why can't sprinkler heads be placed too close together?",o:["Spray from one head can cool a neighboring head so it does not go off","Pipe friction becomes too high","The deflectors collide","It breaks the pipe schedule"],e:"They cannot be too close because one can cool off another head, causing it not to go off."},
+{s:"L12",p:7,t:"num",a:7.5,tol:0,u:"ft",q:"With heads at 15 ft on center, what is the farthest a head can be from a wall?",e:"7 ft 6 in., half the head spacing. The layout sketch is dimensioned 15 ft 0 in. max and 7 ft 6 in. max."},
+{s:"L12",p:7,t:"num",a:6,tol:0,u:"ft",q:"The layout sketch dimensions head spacing as 15 ft max and how many feet minimum?",e:"15 ft max and 6 ft min."},
+{s:"L12",p:5,t:"num",a:30,tol:0,u:"heads",q:"301 Engineering A is light hazard with an area of 6,700 ft². What is the minimum number of heads at 225 ft² each?",e:"6,700 / 225 = 29.8, so at least 30 heads. The actual layout can need more to keep every head within 7 ft 6 in. of a wall."},
+{s:"L12",p:5,t:"ms",c:4,q:"Which assumptions go with the pipe schedule example in the notes?",o:["Light hazard","½ in. orifice","8 sprinklers allowed on either side of the cross main","Steel pipe","Extra hazard","Copper tube"],e:"Light hazard, ½ in. orifice, 8 sprinklers on either side of the cross main, steel pipe, 6,700 ft²."},
+{s:"L12",t:"tf",a:false,q:"The pipe schedule sizing tables are still the accepted way to size sprinkler piping.",e:"False. The slide is stamped: pipe sizing tables obsolete, hydraulic calculations required. Learn the table for class and expect hydraulic calculations in practice."},
+{s:"L12",p:5,t:"num",a:2,tol:0,u:"sprinklers",q:"By the pipe schedule, how many sprinklers can a 1 in. pipe feed?",e:"1 in.: 2 sprinklers. 1¼ in.: 3. 1½ in.: 5. 2 in.: 10. 2½ in.: 30. 3 in.: 60. 3½ in.: 100."},
+{s:"L12",p:5,t:"mc",q:"What is the smallest pipe that can feed 4 sprinklers?",o:["1½ in.","1 in.","1¼ in.","2 in."],e:"1¼ in. stops at 3 sprinklers, so 4 sprinklers need 1½ in., which handles up to 5."},
+{s:"L12",p:5,t:"mc",q:"What is the smallest pipe that can feed 25 sprinklers?",o:["2½ in.","2 in.","3 in.","1½ in."],e:"2 in. stops at 10 sprinklers. 2½ in. handles up to 30."},
+{s:"L12",p:5,t:"mc",q:"A cross main segment carries 45 sprinklers. What size is it?",o:["3 in.","2½ in.","3½ in.","4 in."],e:"2½ in. stops at 30. 3 in. handles up to 60."},
+{s:"L12",p:7,t:"mc",q:"A branch line feeds 5 heads. By the pipe schedule, what size is the segment at the cross main, and what size is the segment feeding only the last 2 heads?",o:["1½ in. at the cross main, 1 in. at the end","2 in. at the cross main, 1¼ in. at the end","1 in. for the whole branch","1¼ in. at the cross main, 1 in. at the end"],e:"Size each segment by the heads downstream of it: 5 heads need 1½ in., 2 heads need 1 in. The layout in your notes labels a branch 1 in., 1 in., 1¼ in., 1½ in. working back toward the main."},
+{s:"L12",p:3,t:"mc",q:"Per the sidewall table, what is the maximum distance between sidewall sprinklers on a branch line?",o:["14 ft for light hazard, 10 ft for ordinary hazard","10 ft for light hazard, 14 ft for ordinary hazard","15 ft for both","6 ft for both"],e:"Light hazard 14 ft, ordinary hazard 10 ft."},
+{s:"L12",p:4,t:"num",a:18,tol:0,u:"in.",q:"What is the minimum clearance between the sprinkler deflector and the top of storage?",e:"Not less than 18 in. (457 mm) above the top of storage."},
+{s:"L12",p:9,t:"mc",q:"What is the minimum design point for light hazard on the density/area curves?",o:["1,500 ft² at 0.10 GPM/ft², 150 GPM","3,000 ft² at 0.10 GPM/ft², 300 GPM","1,500 ft² at 0.15 GPM/ft², 225 GPM","2,500 ft² at 0.40 GPM/ft², 1,000 GPM"],e:"Light (min): 1,500 ft² at 0.10 gives 150 GPM. Light (max): 3,000 ft² at 0.07 gives 210 GPM."},
+{s:"L12",p:9,t:"num",a:225,tol:0,u:"GPM",q:"Ordinary hazard Group 1, minimum point: 1,500 ft² at 0.15 GPM/ft². What is the sprinkler flow?",e:"1,500 × 0.15 = 225 GPM."},
+{s:"L12",p:9,t:"num",a:400,tol:0,u:"GPM",q:"Ordinary hazard Group 1, maximum point: 4,000 ft² at 0.10 GPM/ft². What is the sprinkler flow?",e:"4,000 × 0.10 = 400 GPM."},
+{s:"L12",p:9,t:"num",a:1500,tol:0,u:"GPM",q:"Extra hazard Group 2, maximum point: 5,000 ft² at 0.30 GPM/ft². What is the sprinkler flow?",e:"5,000 × 0.30 = 1,500 GPM. The minimum point is 2,500 ft² at 0.40, giving 1,000 GPM."},
+{s:"L12",p:9,t:"mc",q:"Moving along one hazard curve to a larger area of sprinkler operation does what to the required density?",o:["Lowers it","Raises it","Leaves it the same","Doubles it"],e:"Density drops as area grows: light hazard is 0.10 at 1,500 ft² and 0.07 at 3,000 ft². Total flow still rises, from 150 to 210 GPM."},
+{s:"L12",p:9,t:"mc",q:"Who decides which point on the density/area curve is used?",o:["The insurance carrier or the owner","The sprinkler head manufacturer","The fire pump vendor","The mechanical contractor"],e:"Your note: this is based on the insurance or owner's decision."},
+{s:"L12",p:9,t:"mc",q:"What does the GPM figure at the end of the density/area table represent?",o:["The flow the entire system has to supply","The flow from one head","The hose stream allowance","The jockey pump flow"],e:"The end number is what the entire system has to supply. Your note compares 150 GPM to 15 showers."},
+{s:"L12",p:10,t:"mc",q:"Who provides the hydraulic calculations?",o:["The sprinkler contractor, as part of shop drawings","The architect, during design development","The AHJ","The fire pump manufacturer"],e:"Hydraulic calculations are provided by the sprinkler contractor as part of shop drawings."},
+{s:"L12",p:10,t:"mc",q:"Which formula gives pipe friction loss in hydraulic calculations?",o:["Hazen-Williams: p = 4.52 Q^1.85 / (C^1.85 d^4.87)","Q = K√P","Pv = 0.001123 Q² / D⁴","BHP = Q × P / (1710 × E)"],e:"Hazen-Williams, where p is psi per foot of pipe, Q is GPM, d is the actual internal diameter in inches and C is the friction loss coefficient."},
+{s:"L12",p:10,t:"mc",q:"In the Hazen-Williams formula, what does a larger pipe diameter do to friction loss?",o:["Cuts it sharply, because d is raised to the 4.87 power in the denominator","Raises it in direct proportion","Cuts it in direct proportion","Has no effect"],e:"Loss varies with 1 / d^4.87, so a small increase in diameter removes a lot of friction."},
+{s:"L12",p:10,t:"mc",q:"How is normal pressure found?",o:["Pn = Pt − Pv, total pressure minus velocity pressure","Pn = Pt + Pv","Pn = Pv − Pt","Pn = K√P"],e:"Normal pressure Pn = Pt − Pv. Velocity pressure is Pv = 0.001123 Q² / D⁴."},
+{s:"L12",p:10,t:"mc",q:"A hydraulically calculated system supersedes the pipe schedule rules, but pipe may be no smaller than:",o:["1 in. for ferrous pipe and ¾ in. for copper tube","½ in. for any material","2 in. for any material","1¼ in. for ferrous pipe and 1 in. for copper tube"],e:"The NFPA excerpt in your notes sets minimums of 1 in. nominal for ferrous piping and ¾ in. nominal for copper tubing."},
+{s:"L12",p:8,t:"mc",q:"About how much do fire-rated ceiling tiles weigh?",o:["1 lb per square foot","¼ lb per square foot","5 lb per square foot","10 lb per square foot"],e:"The image caption notes fire-rated tiles are 1 lb/sq ft. The U.L. design shown beside it (G032) is a 2-hour assembly that names the acoustical tile as part of the rating."}
+]},
+{id:"egress",name:"Egress, atriums, fire command center",blurb:"How MEP systems meet corridors, stairs, passageways, atriums and the command center.",qs:[
+{s:"JPA",t:"mc",q:"Who designs occupant egress?",o:["The architect, with life safety code consultants","The MEP engineer","The sprinkler contractor","The fire department"],e:"Designed by the architect with life safety code consultants. The slides call it an entire profession."},
+{s:"JPA",t:"ms",c:4,q:"Which statements describe an exit access corridor?",o:["Sometimes fire rated, depending on occupancy and whether the building is sprinklered","Leads to an exit","Usually has door closers","No storage","May be used as a return-air plenum","Always 2-hour rated"],e:"Sometimes fire rated, leads to an exit, usually has door closers, no storage."},
+{s:"JPA",t:"tf",a:false,q:"An exit access corridor may be used as a plenum for return air.",e:"False. Corridors may not be used as plenums for return air movement."},
+{s:"JPA",t:"mc",q:"When corridor walls are rated, what is needed at duct penetrations where systems have openings to the corridor?",o:["Smoke dampers","Flow switches","Beam detectors","Quick-opening devices"],e:"If corridor walls are rated, smoke dampers are needed at those duct penetrations."},
+{s:"JPA",t:"mc",q:"How do the slides describe exit stairs?",o:["Fire-rated shafts that lead outside or to an exit passageway","Unrated shafts that lead to the atrium","Rated shafts that end at the fire command center","Corridors fitted with door closers"],e:"Fire-rated shafts that lead outside or to an exit passageway, with door closers, no storage, and standpipes when required."},
+{s:"JPA",t:"mc",q:"What is an exit passageway?",o:["A fire-rated tunnel, like a stair but horizontal, that leads outside","A corridor used for return air","A lobby that opens to the atrium","A stair that serves only the roof"],e:"A fire-rated tunnel, just like a stair but horizontal. It leads outside."},
+{s:"JPA",t:"mc",q:"Which building systems may pass through an exit stair or exit passageway?",o:["None. Everything that enters the stair serves the stair","Any system that is firestopped","Domestic water only","Return-air ducts only"],e:"No building systems or air pass through. Everything that goes into the stair serves the stair."},
+{s:"JPA",t:"mc",q:"What HVAC feature do the stairs of a high-rise need?",o:["Stair pressurization","Atrium smoke exhaust","Return-air plenums","Dry pipe valves"],e:"For a high-rise, stair pressurization is needed, with controls that meet fire alarm system requirements."},
+{s:"JPA",t:"ms",c:5,q:"Which statements about atrium HVAC come from the slides?",o:["Hard to condition because of stratification","Smoke exhaust may be needed, with lots of exhaust and makeup air","Exhaust and makeup air both have velocity limits","The smoke layer has to stay above egress for a design fire","CFD modeling is often needed","Sprinklers are waived in tall spaces"],e:"Stratification, smoke exhaust with large exhaust and makeup air flows, velocity limitations (big air devices, open doors), a smoke layer held above egress based on a design fire, and CFD modeling."},
+{s:"JPA",t:"tf",a:false,q:"Sprinklers may be less effective in tall atrium spaces, so they are not required there.",e:"False. Sprinklers may not be as effective in tall spaces, but they are still required."},
+{s:"JPA",t:"mc",q:"Which detector type is often needed in an atrium?",o:["Beam detectors","Tamper switches","Flow switches","Fusible links"],e:"Fire alarm: beam detectors are often needed."},
+{s:"JPA",t:"mc",q:"Which buildings need a fire command center?",o:["High-rise buildings","Every sprinklered building","Parking garages","Every building with a standpipe"],e:"A fire command center is needed for a high-rise building."},
+{s:"JPA",t:"ms",c:6,q:"What does a fire command center contain? Select all that apply.",o:["Building plans","Fire alarm control panel","Voice evacuation communication","Fire department communication and a telephone","Status and control of AHUs and smoke control","Emergency power status","The fire pump test header","The jockey pump"],e:"Building plans, fire alarm control panel, voice evacuation, fire department communication, telephone, all major air-moving equipment, and emergency power status."},
+{s:"JPA",t:"ms",c:3,q:"What does the fire command center room itself need?",o:["A protected entrance","Dedicated HVAC","Emergency power","A deluge system","A hose valve"],e:"A protected entrance, dedicated HVAC and emergency power."}
+]},
+{id:"calcs",name:"Calculation problems",blurb:"Fresh numbers, same methods. Work each one on paper first.",qs:[
+{s:"JPA",t:"num",a:1000,tol:0,u:"GPM",q:"A building has 3 standpipe risers. What flow is required?",e:"500 GPM for the first riser plus 250 GPM for each of the other two = 1,000 GPM."},
+{s:"JPA",t:"num",a:1250,tol:0,u:"GPM",q:"A non-sprinklered building has 4 standpipe risers. What flow is required?",e:"500 + 3 × 250 = 1,250 GPM, which is also the cap for a non-sprinklered building."},
+{s:"JPA",t:"num",a:1000,tol:0,u:"GPM",q:"A sprinklered building has 5 standpipe risers. What flow is required?",e:"500 + 4 × 250 would be 1,500 GPM, but a sprinklered building is capped at 1,000 GPM."},
+{s:"L11",p:6,t:"num",a:52,tol:0.5,u:"psi",q:"A building is 120 ft tall. What is the static head?",e:"120 ft × 0.433 psi/ft = 51.96, about 52 psi."},
+{s:"L11",p:6,t:"num",a:172,tol:1,u:"psi",q:"That same 120 ft building has 12 psi of pipe loss and 8 psi of equipment loss. What is the total required pressure?",e:"100 at the top + 52 head + 12 pipe + 8 equipment = 172 psi."},
+{s:"L11",p:6,t:"num",a:132,tol:1,u:"psi",q:"The flow test shows 40 psi available at the required flow. What pressure must the fire pump add to reach 172 psi?",e:"172 − 40 = 132 psi."},
+{s:"L11",p:6,t:"num",a:118.8,tol:1,u:"BHP",q:"Find the brake horsepower for 1,000 GPM at 132 psi with 65% efficiency.",e:"1,000 × 132 / (1710 × 0.65) = 132,000 / 1,111.5 = 118.8 BHP."},
+{s:"L11",p:6,t:"mc",q:"Which motor from the table in the notes fits 118.8 BHP?",o:["125 HP","100 HP","150 HP","75 HP"],e:"100 HP falls short. The next size on the table is 125 HP."},
+{s:"JPA",t:"num",a:182,tol:0.5,u:"psi",q:"A fire pump is rated 750 GPM at 130 psi. What is the highest pressure it may produce at churn?",e:"140% of 130 psi = 182 psi."},
+{s:"JPA",t:"num",a:84.5,tol:0.5,u:"psi",q:"The same pump (750 GPM at 130 psi) is run at 150% of rated flow, 1,125 GPM. What pressure must it still deliver?",e:"65% of 130 psi = 84.5 psi at 1,125 GPM."},
+{s:"JPA",t:"num",a:28,tol:0.2,u:"GPM",q:"A head with K = 5.6 sees 25 psi. What is its flow?",e:"Q = K√P = 5.6 × √25 = 5.6 × 5 = 28 GPM."},
+{s:"JPA",t:"num",a:32,tol:0.2,u:"GPM",q:"A head with K = 8.0 sees 16 psi. What is its flow?",e:"Q = 8.0 × √16 = 8.0 × 4 = 32 GPM."},
+{s:"JPA",t:"num",a:28.7,tol:0.5,u:"psi",q:"What pressure does a K = 5.6 head need to deliver 30 GPM?",e:"P = (Q / K)² = (30 / 5.6)² = 5.357² = 28.7 psi."},
+{s:"L12",p:2,t:"num",a:93,tol:0,u:"heads",q:"An ordinary hazard floor is 12,000 ft². What is the minimum number of heads?",e:"12,000 / 130 = 92.3, so round up to 93 heads."},
+{s:"L12",p:2,t:"num",a:12,tol:0,u:"heads",q:"A light hazard room measures 45 ft × 60 ft. How many heads does it need at maximum spacing?",e:"2,700 / 225 = 12 heads. A 3 × 4 grid at 15 ft on center puts the outer rows 7 ft 6 in. from the walls, which is the limit."},
+{s:"JPA",t:"num",a:475,tol:0,u:"GPM",q:"Ordinary hazard Group 1, designed at 0.15 GPM/ft² over 1,500 ft². Add the hose stream allowance. What total flow must the supply deliver?",e:"Sprinklers 1,500 × 0.15 = 225 GPM. Hose stream for ordinary hazard is 250 GPM. Total 475 GPM."},
+{s:"JPA",t:"num",a:28500,tol:0,u:"gallons",q:"That 475 GPM demand must last 60 minutes, the low end for ordinary hazard. How much stored water is that?",e:"475 GPM × 60 min = 28,500 gallons. At the 90-minute end it would be 42,750 gallons."},
+{s:"JPA",t:"num",a:292.5,tol:1,u:"GPM",q:"A 225 GPM sprinkler demand is served by a dry pipe system. Apply the modifier. What is the sprinkler flow now?",e:"Dry pipe adds 30%: 225 × 1.30 = 292.5 GPM."},
+{s:"L12",p:10,t:"num",a:0.094,tol:0.005,u:"psi/ft",q:"Use Hazen-Williams for 100 GPM in pipe with a 2.067 in. internal diameter and C = 120. What is the friction loss per foot?",e:"p = 4.52 × 100^1.85 / (120^1.85 × 2.067^4.87) = 0.094 psi per foot, or about 9.4 psi per 100 ft."},
+{s:"L12",p:10,t:"num",a:1.07,tol:0.05,u:"psi",q:"Find the velocity pressure for 500 GPM in pipe with a 4.026 in. internal diameter.",e:"Pv = 0.001123 Q² / D⁴ = 0.001123 × 250,000 / 262.7 = 1.07 psi."},
+{s:"L10",t:"num",a:1120,tol:1,u:"BTU",q:"One pound of water at 62°F is heated to 212°F and then vaporized. How much heat does it absorb?",e:"Sensible: 1 Btu/°F·lb × (212 − 62) = 150 BTU. Latent: 970 BTU. Total 1,120 BTU."},
+{s:"C10",t:"num",a:65000,tol:0,u:"ft²",q:"A building's tabular allowable area is 20,000 ft². The frontage increase is 25% and the sprinkler increase is 200%. What is the allowable area?",e:"Aa = A × (1 + If/100 + Is/100) = 20,000 × (1 + 0.25 + 2.00) = 65,000 ft²."},
+{s:"C10",t:"num",a:3,tol:0,u:"areas of refuge",q:"A floor has 520 occupants. At one area of refuge for each 200 occupants, how many are needed?",e:"520 / 200 = 2.6, so 3 areas of refuge."},
+{s:"C10",t:"num",a:28500,tol:0,u:"ft²",q:"The table allows 9,500 ft² per floor. The building is multi-story and fully sprinklered, with no frontage increase. What is the allowable area per floor?",e:"Sprinklers add 200%: 9,500 × 2 = 19,000 on top of the 9,500, for 28,500 ft²."},
+{s:"C10",t:"num",a:50,tol:0,u:"%",q:"Three quarters of a building's perimeter fronts open space 30 ft wide. What frontage increase If does it earn?",e:"If = [F/P − 0.25] × W/30 = (0.75 − 0.25) × 30/30 = 0.50, a 50% increase."},
+{s:"C10",t:"num",a:40,tol:0.5,u:"%",q:"Same building, but the open space is only 24 ft wide. What is the frontage increase now?",e:"(0.75 − 0.25) × 24/30 = 0.40, a 40% increase. Below 20 ft it would be zero."},
+{s:"C10",t:"num",a:140,tol:0,u:"occupants",q:"A business floor has 14,000 ft² of gross area. What is its occupant load?",e:"14,000 / 100 ft² per occupant = 140 occupants."},
+{s:"C10",t:"num",a:48,tol:0,u:"in.",q:"Those 140 occupants use one stair at 0.3 in. of width per occupant. What stair width must be provided?",e:"140 × 0.3 = 42 in. by calculation, but the minimum stair width is 48 in., so 48 in. governs."},
+{s:"FA",t:"num",a:434,tol:0,u:"people",q:"From the egress practicum review: 225 people come down a stair and 209 come up it from the basement. Both streams meet at the first-floor landing. How many must that landing handle?",e:"225 + 209 = 434. First-floor occupants are left out, because they exit directly outside."}
+]},
+{id:"codes",name:"Codes and egress requirements",blurb:"Types of codes, IBC height and area, means of egress, signs, lighting, stairs and smoke-proof towers.",qs:[
+{s:"C10",t:"ms",c:3,q:"How does the codes lecture describe building codes?",o:["They provide sound and progressive construction practices","They are minimum requirements","They don't cover everything","They describe the ideal building","They apply only to high-rises"],e:"Sound and progressive construction practices, minimum requirements, and codes don't cover everything."},
+{s:"C10",t:"mc",q:"A project includes something the code does not cover. Who makes the interpretation?",o:["The AHJ, the authority having jurisdiction","The architect of record","The sprinkler contractor","The building owner"],e:"Codes are not written to cover every eventual problem. When they don't, the authority having jurisdiction (AHJ) makes the final call on whether the design meets the code's intent."},
+{s:"C10",t:"ms",c:3,q:"What does a zoning code do?",o:["Regulates the type and size of buildings in a specific area of a municipality","Protects property value","Results from land use planning","Sets sprinkler densities","Rates fire-resistive assemblies"],e:"Zoning is a municipal code that regulates the type and size of buildings in an area, protects property value, and is the result of land use planning. Typical zones: commercial, industrial, residential."},
+{s:"C10",t:"mc",q:"Which federal body sets minimal standards for hospitals and other medical facilities?",o:["Department of Health","OSHA","HUD","ICC"],e:"Department of Health: hospitals and medical facilities. OSHA: the workplace. HUD: farmer's home."},
+{s:"C10",t:"ms",c:3,q:"Which were the former model codes?",o:["National Building Code","Uniform Building Code","Southern Standard Building Code","NFPA 13","Zoning ordinance"],e:"National Building Code, Uniform Building Code (International Conference of Building Officials) and Southern Standard Building Code. Model code organizations wrote them, municipalities adopted them, and they were updated every few years."},
+{s:"C10",t:"mc",q:"Who publishes the International Building Code?",o:["ICC, the International Code Council","NFPA, the National Fire Protection Association","U.L., Underwriter Laboratory","OSHA"],e:"The International Building Code comes from the ICC, the International Code Council."},
+{s:"C10",t:"tf",a:false,q:"A new edition of the IBC applies in Pennsylvania as soon as the ICC publishes it.",e:"False. Until a government adopts it by law, it is just a book somebody wrote. Pennsylvania adopted the IBC by law, and State College adopted it too so it can write local exceptions and clarifications."},
+{s:"C10",t:"mc",q:"NFPA standards are described as what kind of codes?",o:["How-to codes","Zoning codes","Model codes","Federal regulations"],e:"Standards are how-to codes. NFPA 13 covers sprinklers, NFPA 14 standpipes and hose systems, NFPA 101 life safety."},
+{s:"C10",t:"mc",q:"Which NFPA standard covers life safety?",o:["NFPA 101","NFPA 13","NFPA 14","NFPA 22"],e:"NFPA 101 is Life Safety. NFPA 13 is sprinklers and NFPA 14 is standpipes and hose systems."},
+{s:"C10",t:"mc",q:"Which document is the National Electrical Code?",o:["NFPA 70","NFPA 13","NFPA 101","The IBC electrical chapter"],e:"NFPA 70 is the National Electrical Code. The whole country has used one electrical code for a long time. In lecture the IBC was called a where-to code and the NFPA standards how-to codes."},
+{s:"C10",t:"ms",c:2,q:"What does Underwriter Laboratory rate?",o:["Assemblies","Structural protection systems","Zoning districts","Occupant loads"],e:"U.L. rates assemblies and rates structural protection systems."},
+{s:"C10",t:"mc",q:"In the U.L. fire resistance directory, a design number that starts with X, Y or Z is what kind of assembly?",o:["A column","A floor-ceiling assembly","A wall or partition","A beam"],e:"Columns are X, Y, Z. Walls and partitions are U, V, W. Beams are S and T. Floor-ceiling assemblies start at A. X700-series designs use spray-applied fire-resistive material, rated 1 to 4 hours by thickness."},
+{s:"C10",t:"mc",q:"In the 2-hour floor-ceiling design shown in lecture (G032), which component does most of the fire-resistance work?",o:["The acoustical tile ceiling","The concrete topping","The steel joists","The wire fabric"],e:"The ceiling membrane does the majority of the work, because bar joists warp quickly with heat. That is why the holes allowed in a rated ceiling are limited, and why the assembly must be built exactly as tested."},
+{s:"C10",t:"mc",q:"Where in the IBC are these found, in order: use groups, type of construction, allowable height and building areas?",o:["Section 302, Table 601, Table 503","Table 601, Section 302, Section 506","Section 504, Table 503, Table 601","Chapter 7, Chapter 9, Chapter 10"],e:"Use groups and occupancies: Section 302. Type of construction: Table 601. Allowable height and building areas: Table 503."},
+{s:"C10",t:"mc",q:"Which IBC occupancy group covers business uses, and which covers schools?",o:["Group B for business and Group E for educational","Group E for business and Group B for educational","Group A for business and Group M for educational","Group R for business and Group I for educational"],e:"Section 304 is Business Group B. Group E is Educational."},
+{s:"C10",t:"mc",q:"Which occupancy group is a university building such as ECoRE?",o:["Business, Group B","Educational, Group E","Assembly, Group A","Institutional, Group I"],e:"Group E is for K through 12 only, where the contents are predictable. A university building is treated as a business occupancy. Assembly is A and hospitals are I."},
+{s:"C10",t:"mc",q:"Which construction type is the most fire resistive, with unlimited height and area?",o:["Type 1A","Type 5B","Type 3B","Type 5A"],e:"Table 601 runs from Type 1 (best) to Type 5. Type 5B has zeros across the table. Type 1A is unlimited in stories and area, which is what a very tall building needs."},
+{s:"C10",t:"mc",q:"Under IBC Section 504, what does an approved automatic sprinkler system throughout the building add to the allowable height?",o:["20 feet and one story","10 feet and one story","20 feet and two stories","Nothing, because sprinklers only affect area"],e:"Height is increased by 20 feet and the maximum number of stories by one."},
+{s:"C10",t:"mc",q:"How much area increase does an automatic sprinkler system earn?",o:["200% for a multi-story building, 300% for a single-story building","100% for a multi-story building, 200% for a single-story building","300% for a multi-story building, 200% for a single-story building","20% for any building"],e:"200% more area per floor for a multi-story building and 300% for a single-story building, plus 20 ft of height and one story. It used to be 100%."},
+{s:"C10",t:"mc",q:"Which occupancies get no sprinkler area increase?",o:["High hazard groups H-1, H-2 and H-3","Business group B","Assembly groups A-1 and A-2","Storage group S-2"],e:"The exception is H-1, H-2 and H-3, the high-hazard occupancies. If a design takes the sprinkler allowance, the building has to be sprinklered."},
+{s:"C10",t:"mc",q:"In the area modification formula Aa = A [1 + If/100 + Is/100], what are If and Is?",o:["If is the frontage increase and Is is the sprinkler increase","If is the fire rating and Is is the story count","If is the floor area and Is is the site area","If is the insurance factor and Is is the safety factor"],e:"Section 506: If is the frontage increase and Is is the sprinkler increase, both in percent."},
+{s:"C10",t:"mc",q:"How does the perimeter (frontage) increase work?",o:["1% more area for each percent of open perimeter above 25%, modified by the open width between 20 ft and 30 ft","1% more area for each foot of frontage","25% more area for any building on a corner lot","Double the area when all four sides are open"],e:"One percent increase in permitted area for each percent of open perimeter greater than 25%, modified by the width between 20 ft and 30 ft."},
+{s:"C10",t:"mc",q:"The frontage increase is If = [F/P − 0.25] × W/30. Why is 0.25 subtracted?",o:["Every building is assumed to front a street on one side, so the first 25% of open perimeter earns no credit","Sprinklers already cover 25% of the perimeter","The code assumes 25% of the perimeter is glass","Fire engines need 25% of the lot"],e:"F is the perimeter that fronts a public way or open space, and P is the whole perimeter. A square downtown building always has its front open, so that quarter is taken away. The most you can earn is 75%."},
+{s:"C10",t:"mc",q:"In the frontage formula, how does the open width W count?",o:["30 ft or more counts in full, 20 to 30 ft counts as W/30, and under 20 ft counts for nothing","Any width counts in full","Only widths over 100 ft count","20 ft counts in full and anything wider earns extra"],e:"W/30 is capped at 1. Thirty feet lets a fire engine park away from the building and lean a ladder on it. At 20 ft the multiplier is 2/3, and below 20 ft there is no credit."},
+{s:"C10",t:"tf",a:true,q:"Basements need not be counted in the total allowable floor area, provided their total area does not exceed the area permitted for a one-story building above grade plane.",e:"True. That is IBC 506.1.3 as quoted on the 2021 slide."},
+{s:"C10",t:"ms",c:3,q:"What are the three ways to handle a mixed-use occupancy?",o:["Build the whole building to the more stringent requirements","One structure with separating fire-rated construction","Two separate structures","Average the requirements of the two uses","Apply the less stringent requirements"],e:"Build to the more stringent requirements, separate the uses with fire-rated construction, or build two separate structures."},
+{s:"C10",t:"num",a:2,tol:0,u:"hours",q:"A classroom building (Group B) sits on top of a parking garage (Group S-2) in one structure. What fire rating must the separation between them have?",e:"A 2-hour separation, meaning the floor slab has to last 2 hours in the U.L. furnace test. Building the garage as a separate structure, as at ECoRE, avoids it."},
+{s:"C10",t:"mc",q:"Which part of the means of egress leads from an occupied point to an exit?",o:["Exit access","Exit","Exit discharge","Area of refuge"],e:"Exit access (corridors) is the portion that leads from an occupied point to an exit."},
+{s:"C10",t:"mc",q:"How does the IBC define the exit itself?",o:["The portion separated from other interior spaces by fire-resistive construction, temporarily as safe as outside","The door to the outside","The corridor leading to a stair","Any path wider than 48 in."],e:"The exit (a stair, for example) is separated from other interior spaces by fire-resistive construction. The slide calls it temporarily as safe as outside."},
+{s:"C10",t:"mc",q:"What is the exit discharge?",o:["The portion between the termination of an exit and a public way","The portion from an occupied point to an exit","The enclosed stair","The smoke compartment"],e:"Exit discharge (the door to the outside) is the portion between the termination of an exit and a public way."},
+{s:"C10",t:"num",a:50,tol:0,u:"occupants",q:"A space with one means of egress is limited to how many occupants (groups A, B, E, F, M, U)?",e:"50 occupants maximum."},
+{s:"C10",t:"mc",q:"What floor area does the occupant load table assign to each person in a business occupancy?",o:["100 ft² gross","40 ft² net","15 ft² net","225 ft² gross"],e:"100 ft² gross per occupant, a 10 ft × 10 ft square each. A courtroom is 40. The same table sets exit width, plumbing fixture counts and outdoor air. A space for more than 50 people needs two ways out, and the two exits must be separated from each other."},
+{s:"C10",t:"mc",q:"What is the travel distance limit for occupancy B?",o:["200 ft, or 300 ft if sprinklered","100 ft, or 200 ft if sprinklered","300 ft, or 400 ft if sprinklered","400 ft in all cases"],e:"Total length of travel for occupancy B: 200 feet, 300 if sprinklered."},
+{s:"C10",t:"mc",q:"How long may a dead-end corridor be?",o:["20 ft, or 50 ft if sprinklered","50 ft, or 20 ft if sprinklered","30 ft, or 75 ft if sprinklered","200 ft, or 300 ft if sprinklered"],e:"Dead-end corridor: 20 feet max, 50 if sprinklered."},
+{s:"C10",t:"ms",c:4,q:"Which requirements apply to an area of refuge?",o:["A 30 in. × 48 in. floor area for a wheelchair","Located in an enclosed stair or smoke compartment","One for each 200 occupants","Two-way communication to a central control point or public phone","A dedicated sprinkler zone","A minimum of 5 footcandles of light"],e:"30 in. × 48 in. per wheelchair, in an enclosed stair or smoke compartment, one for each 200 occupants, with two-way communication."},
+{s:"C10",t:"mc",q:"What is the minimum clear door width?",o:["32 in. clear, which means a 36 in. door","36 in. clear, which means a 40 in. door","28 in. clear, which means a 32 in. door","48 in. clear"],e:"Minimum 32 in. clear (36 in. door)."},
+{s:"C10",t:"ms",c:2,q:"Which limits apply to a door that swings into the path of egress?",o:["It may not reduce the required exit width by one half during its swing","It may not project more than 7 in. into the required width","It must swing against the direction of travel","It must be held open at all times"],e:"The swing shall not reduce the required exit width by one half, and the door shall not project more than 7 in. into the required width."},
+{s:"C10",t:"ms",c:4,q:"Which requirements apply to exit signs?",o:["Illuminated internally or externally to 5 footcandles","Illuminated at all times","90 minutes of battery or generator power","Letters 6 in. high","Letters 12 in. high","Lit only when primary power fails"],e:"5 footcandles, lit at all times, 90 minutes on battery or generator, 6 in. high letters that are 2 in. wide (except the letter I) with ¾ in. strokes."},
+{s:"C10",t:"tf",a:false,q:"The code requires exit signs to be red.",e:"False. They can be red or green. Practice is leaning toward green, which reads as go."},
+{s:"C10",t:"mc",q:"How does emergency lighting differ from exit sign lighting?",o:["Emergency lighting gives at least 1 footcandle and comes on when primary power fails. Exit signs get 5 footcandles at all times","Emergency lighting gives 5 footcandles at all times. Exit signs get 1 footcandle on power failure","Both give 1 footcandle at all times","Emergency lighting needs 30 minutes of backup. Exit signs need 90"],e:"Emergency lighting: 1 footcandle minimum, illuminated when the primary power source fails. Exit signs: 5 footcandles, at all times. Both need 90 minutes of battery or generator."},
+{s:"C10",t:"num",a:90,tol:0,u:"minutes",q:"How long must the battery or generator carry exit signs and emergency lighting?",e:"90 minutes."},
+{s:"C10",t:"ms",c:5,q:"Where two exits are required, what must emergency lighting illuminate?",o:["Aisles in rooms and spaces requiring 2 exits","Passageways","Exit access corridors","Exits","Exit discharge","Private offices","Mechanical rooms only"],e:"Aisles in rooms and spaces requiring two exits, passageways, exit access corridors, exits, and exit discharge."},
+{s:"C10",t:"mc",q:"Which set of stair dimensions matches the lecture?",o:["48 in. minimum width, 7 in. maximum riser, 4 in. minimum riser, 11 in. minimum tread","36 in. minimum width, 8 in. maximum riser, 4 in. minimum riser, 9 in. minimum tread","48 in. minimum width, 11 in. maximum riser, 7 in. minimum riser, 4 in. minimum tread","44 in. minimum width, 7 in. maximum riser, 6 in. minimum riser, 10 in. minimum tread"],e:"Width 48 in. minimum, riser 7 in. maximum and 4 in. minimum, tread 11 in. minimum."},
+{s:"C10",t:"mc",q:"How much may risers and treads vary within a stair?",o:["⅜ in. maximum","1 in. maximum","⅛ in. maximum","Any amount, if the average riser is 7 in."],e:"Stairs must be uniform in size, with a ⅜ in. variation at most."},
+{s:"C10",t:"mc",q:"What rule of thumb ties riser height to tread depth?",o:["They should add up to 18 in., so 7 and 11, or 6 and 12","They should be equal","Tread should be twice the riser","They should add up to 24 in."],e:"Remember 7-Eleven: a 7 in. riser with an 11 in. tread. The sum stays at 18 in., so a 6 in. riser gets a 12 in. tread and a 4 in. riser gets 14 in. Nosings need a ½ in. radius."},
+{s:"C10",t:"num",a:75,tol:0,u:"ft",q:"Smoke-proof towers are required once a building reaches what height?",e:"75 ft, measured to the floor of the top story. The stair must stay smoke-free, either with a vestibule or balcony that vents the smoke, or with stair pressurization."},
+{s:"C10",t:"mc",q:"How is the 75 ft high-rise threshold measured?",o:["From the level of fire department access up to the floor of the highest occupied story","From grade to the top of the roof","From the basement floor to the top floor ceiling","From the street to the top of the parapet"],e:"Stand on the top floor: if that floor is 75 ft or more above the grade where the fire department comes in, the high-rise requirements apply."},
+{s:"C10",t:"mc",q:"What pressure does stair pressurization hold in the stair tower relative to adjacent spaces?",o:["0.15 to 0.35 in. of water column, positive","0.15 to 0.35 psi, positive","1 to 2 in. of water column, negative","0.433 psi per foot of height"],e:"The stair tower is under positive pressure of 0.15 to 0.35 in. water column. No vestibule is required, and the fan is activated by the fire alarm system."},
+{s:"C10",t:"mc",q:"Why is stair pressurization held between 0.15 and 0.35 in. of water column?",o:["0.15 in. is enough to push smoke back, and above 0.35 in. a small person could not open the door","0.15 in. protects the ductwork, and 0.35 in. is the fan's limit","Below 0.15 in. the fire alarm will not start, and above 0.35 in. sprinklers open","The range matches the pressure in the standpipe"],e:"The low end guarantees smoke is pushed back onto the floor each time a door opens. The high end keeps the door openable. With pressurization no vestibule is needed. The alternative is a vestibule or balcony that lets the smoke leave before it reaches the stair."},
+{s:"C10",t:"tf",a:false,q:"Exits and exit corridors may be used as return-air plenums when the building is sprinklered.",e:"False. Exits and exit corridors shall not be used as return air plenum. In lecture: return air may travel above the corridor ceiling, since smoke up there leaves the corridor itself clear. The guest slides state the same corridor rule."},
+{s:"C10",t:"mc",q:"What is the area limit for compartmentalization?",o:["150 ft × 150 ft, 22,500 ft²","100 ft × 100 ft, 10,000 ft²","200 ft × 200 ft, 40,000 ft²","225 ft² per compartment"],e:"Area limitation: 150 ft × 150 ft max, 22,500 ft²."},
+{s:"C10",t:"ms",c:4,q:"What else does compartmentalization involve?",o:["Smoke partitions","Fire separators","Smoke detectors that close doors","Separate HVAC systems on either side","A shared return-air plenum","A single fire pump per compartment"],e:"Smoke partitions, fire separators, smoke detectors that close the doors, and separate HVAC systems on either side."},
+{s:"C10",t:"num",a:1.5,tol:0,u:"hours",q:"A stair enclosure is 2-hour construction. What rating does a door in that wall need, such as the sliding Won-Door at ECoRE?",e:"1½ hours. A door in a 2-hour wall only has to be rated 1½ hours."},
+{s:"C10",t:"mc",q:"When does a floor opening become an atrium?",o:["When it connects more than two stories","When it has a skylight","When it is wider than 30 ft","When it connects any two stories"],e:"A two-story vertical opening is permitted. Once the opening connects more than two stories it is an atrium, with smoke exhaust at the top and an enclosure. At ECoRE, sprinklers in front of the glass let the glass wall serve as part of that enclosure."},
+{s:"C10",t:"mc",q:"How does an intumescent firestop collar around a pipe work?",o:["Its material expands when heated and fills the opening","It melts and seals the pipe shut with wax","It sprays water on the pipe","It releases a fusible link that drops a damper"],e:"Firestop collars hold intumescent material that swells with heat and closes the hole. Sealant around a penetration does the same job. Once it has expanded it must be replaced."},
+{s:"C10",t:"sa",q:"The lecture ends with an exit stair door whose rubber seal was hanging loose. What happened after it was reported, and what is the lesson?",m:"The label showed the door is both a fire door and a smoke door, so it needs its smoke seals to be airtight. Maintenance responded by pulling the gasket off, which left the door no longer smokeproof. The lesson from lecture: the people who maintain a building have to understand it too, and as an engineer you are obligated to report these things for public health and safety."}
+]},
+{id:"alarm",name:"Fire alarm systems",blurb:"Purpose, initiating devices, indicating devices, auxiliary functions, the control panel and the high-rise code.",qs:[
+{s:"FA",t:"ms",c:2,q:"What are the two purposes of a fire alarm system?",o:["Save lives by announcing unsafe conditions","Protect property by alerting the fire department","Put out the fire","Pressurize the stairs"],e:"Save lives by announcing unsafe conditions, and protect property by alerting the fire department."},
+{s:"FA",t:"mc",q:"What separates a manual fire alarm system from an automatic one?",o:["Whether the alarm initiating device is operated manually or automatically","Whether the alarm is a bell or a speaker","Whether the panel has standby power","Whether the building is a high-rise"],e:"Manual: the initiating device is operated manually to transmit or sound an alarm signal. Automatic: the initiating device operates automatically."},
+{s:"FA",t:"mc",q:"What is the weakness of a purely manual, local fire alarm system?",o:["The alarm sounds in that building only, so someone still has to call the fire department","It cannot ring more than one bell","It needs standby power","It responds only to smoke"],e:"A manual system is in your building only. Nobody else knows, so somebody has to get on the phone. An automatic system works without people intervening."},
+{s:"FA",t:"mc",q:"Which of these is a manual initiating device?",o:["A pull station, including glass-break and dual-action types","A fixed-temperature heat detector","An ionization smoke detector","A flame detector"],e:"Manual devices are pull stations. The glass rod stops the mildly curious. Heat, smoke and flame detectors are automatic devices."},
+{s:"FA",t:"num",a:5,tol:0,u:"ft",q:"By code, a pull station must be within how many feet of the exit?",e:"5 feet from the exit."},
+{s:"FA",t:"mc",q:"What is a dual-action pull station, and what problem does it address?",o:["You lift a cover, which sounds a local buzzer, then pull. It discourages false alarms from vandalism","It rings two bells at once for large buildings","It works on both normal and standby power","It sends the alarm to two fire stations"],e:"Two motions are required. Lifting the plastic cover sets off a buzzer, which is often enough to make a vandal leave before pulling the alarm."},
+{s:"FA",t:"ms",c:3,q:"Which statements describe a fixed-temperature heat detector?",o:["It senses abnormally high temperatures","It is the slowest to respond","It has the lowest false alarm rate","It responds in the incipient stage","It senses obscurity"],e:"Senses abnormally high temperatures, slowest to respond, lowest false alarm rate."},
+{s:"FA",t:"ms",c:2,q:"Where are fixed-temperature heat detectors used?",o:["Areas where smoke and dirt are a problem","Low-temperature locations","Boiler rooms, where high temperature is normal","Places where a fire starts instantaneously"],e:"Used where smoke and dirt is a problem and in low-temperature locations. Boiler rooms call for rate-of-rise detectors, and instantaneous fires call for flame detectors."},
+{s:"FA",t:"mc",q:"What does a rate-of-rise detector sense, and where is it used?",o:["An abnormal rate of heat rise, where high temperature is normally expected, such as a boiler room","Smoke obscuring a light beam, in atriums","Electromagnetic radiation, where fire is instantaneous","A fixed temperature of 135°F, in offices"],e:"Rate-of-rise detectors sense an abnormal rate of heat rise and are used where high temperature can be expected normally, such as a boiler room."},
+{s:"FA",t:"num",a:15,tol:0,u:"°F per minute",q:"A rate-of-rise detector alarms when temperature climbs faster than what rate?",e:"More than 15°F per minute."},
+{s:"FA",t:"mc",q:"How does an ionization smoke detector work?",o:["Radiation ionizes the air so current flows between electrodes, and particles of combustion attach to the ions and inhibit the current","Smoke scatters a photoelectric beam onto a sensor","A fusible element melts at a set temperature","It senses infrared radiation from flames"],e:"Radiation within the detector ionizes the air and makes it conductive, permitting current flow between electrodes. Particles of combustion attach to the ions and inhibit the current flow."},
+{s:"FA",t:"ms",c:2,q:"Which statements describe how an ionization smoke detector performs?",o:["Fast response, in the incipient stage","Prone to false alarms","Slowest to respond","Lowest false alarm rate"],e:"Fast response (incipient stage) and prone to false alarms. Slowest and lowest false alarm rate describe the fixed-temperature heat detector."},
+{s:"FA",t:"mc",q:"How does a smoke alarm differ from a smoke detector?",o:["A smoke alarm is self-contained with its own sounder. A smoke detector is an input device that reports to the control panel","A smoke alarm senses heat. A smoke detector senses smoke","A smoke alarm is for commercial buildings. A smoke detector is for homes","They are the same device under two names"],e:"The unit in an apartment has the sensing, the logic and the horn built in. In a commercial system the detector only sends a signal, and the panel knows which address it came from."},
+{s:"FA",t:"mc",q:"How does a photoelectric smoke detector work, and which stage does it catch?",o:["Smoke scatters a photoelectric beam (it senses obscurity), in the smoldering stage","Smoke particles inhibit an ion current, in the incipient stage","It senses a rate of heat rise, in the flaming stage","It detects ultraviolet radiation, in instantaneous fires"],e:"Photoelectric detectors sense obscurity: scattering of the photoelectric beam causes the alarm. They suit the smoldering stage."},
+{s:"FA",t:"mc",q:"What does the word beam refer to in a beam detector, and where is it used?",o:["A light beam sent across the whole space to a receiver. It suits very large spaces, where a few units replace many spot detectors","The structural beam it mounts on. It suits low ceilings","An infrared beam that senses flames. It suits boiler rooms","A beam of ions. It suits kitchens"],e:"It is a photoelectric detector stretched across the room: a sender at one end and a receiver at the other. Smoke anywhere along the path interrupts it. The guest slides call for beam detectors in atriums."},
+{s:"FA",t:"mc",q:"What does a flame detector sense, and where is it used?",o:["Electromagnetic radiation from a fire, where fire occurs instantaneously","Particles of combustion, in bedrooms","Abnormally high temperature, in dirty areas","Water flow, at the zone valve"],e:"Flame detectors detect electromagnetic radiation resulting from a fire and are used where fire occurs instantaneously. The two types are infrared and ultraviolet."},
+{s:"FA",t:"mc",q:"Which detector does the lecture call very early warning smoke detection?",o:["ASD, aspirating smoke detection","Fixed-temperature heat detector","Rate-of-rise detector","Manual pull station"],e:"ASD, aspirating smoke detection, is very early warning smoke detection."},
+{s:"FA",t:"mc",q:"How does aspirating smoke detection (ASD) work in the ECoRE atrium?",o:["It draws atrium air through small nozzles to detectors in a cabinet, for early warning, and it triggers the atrium smoke exhaust","It sprays a fine mist to wash smoke out of the air","It measures temperature rise at the skylight","It shines a beam across the atrium"],e:"ASD keeps sampling air from the atrium and runs it through detectors. Early detection matters because the building is wide open. It activates the smoke exhaust fans at the top of the atrium, whose power must stay on during a fire."},
+{s:"FA",t:"mc",q:"What is the basic requirement for alarm indicating devices?",o:["They must be heard throughout the building","They must be visible from the street","They must stay silent until the fire department arrives","They must sit on every sprinkler branch"],e:"Alarm indicating devices must be heard throughout the building."},
+{s:"FA",t:"ms",c:5,q:"Which are alarm indicating devices?",o:["Bell","Horn","Strobe","Speaker (voice command)","Annunciation panel","Pull station","Flow switch"],e:"Bell, horn, strobe, speaker and annunciation panel. Pull stations and flow switches are initiating devices."},
+{s:"FA",t:"mc",q:"What are strobes for?",o:["Alerting the hearing impaired, including in public washrooms under the ADA","Lighting the path of egress","Showing which zone is in alarm","Signaling a trouble condition at the panel"],e:"Strobes alert the hearing impaired and go in public washrooms (ADA)."},
+{s:"FA",t:"num",a:95,tol:0,u:"dB",q:"How loud is a fire alarm horn?",e:"95 decibels, loud enough to wake a sleeper and to reach people who are slightly hearing impaired."},
+{s:"FA",t:"mc",q:"How did voice evacuation messages change after 9/11?",o:["Everyone is now told to leave the building, where some messages used to tell floors to stay in place or relocate","Voice messages were banned in high-rises","Messages now tell occupants to wait for the elevator","Messages are now given only to the fire department"],e:"Before 9/11 some systems directed people by floor and asked others to stay. Now, whatever happens, people are asked to leave the building."},
+{s:"FA",t:"mc",q:"What is an annunciation panel?",o:["A display, often near the entrance, that shows where the alarm is when the control panel is somewhere else","The cabinet that holds the CPU and powers the devices","A speaker for voice messages","A strobe for the hearing impaired"],e:"A small display with a keypad that reads out the alarm location. It is separate from the control panel, the brain, which is usually in or behind the front lobby."},
+{s:"FA",t:"ms",c:5,q:"Which auxiliary functions can the fire alarm system perform?",o:["Elevator recall","Activate HVAC and smoke evacuation system control","Release smoke doors held on hold-open devices","Discharge extinguishing systems such as deluge","Remote annunciation","Start the jockey pump on a schedule","Reset fusible links"],e:"Elevator recall, HVAC/smoke evacuation control, releasing smoke doors on hold-open devices, discharging extinguishing systems (deluge), and remote annunciation."},
+{s:"FA",t:"mc",q:"On alarm the elevators are recalled. Where do they go, and why?",o:["To the ground floor, so the fire department can use them","To the top floor, to keep them above the smoke","To the fire floor, to pick up occupants","They stop where they are with doors open"],e:"Recall brings the cars to the ground floor for the fire department. Firefighters ride to the floor below the fire and work their way up."},
+{s:"FA",t:"mc",q:"Besides recall, why should you never take an elevator during a fire?",o:["Smoke at the fire floor can block the door's light beam, so the door stays open and the car is stuck there","Elevator cars are not sprinklered","The elevator shaft is the return-air path","Elevators lose power the moment the alarm sounds"],e:"The door sensor is a light beam. If the car opens at the fire floor, smoke interrupts the beam and the door will not close. The car is not coming anyway, and it cannot carry everyone."},
+{s:"FA",t:"ms",c:2,q:"Which are auxiliary initiation devices?",o:["Halon or clean agent system activation","Kitchen hood dry chemical extinguishing system","Manual pull station","Strobe"],e:"Halon/clean agent system activation and the kitchen hood dry chemical extinguishing system both report to the fire alarm."},
+{s:"FA",t:"mc",q:"What replaced Halon in computer rooms, and why?",o:["Clean agent gases, because Halon has been outlawed","Deluge sprinklers, because Halon was too slow","Dry chemical, because Halon was too costly","Nothing. Halon is still installed"],e:"Halon is no longer allowed, so substitute gases, called clean agents, do the job. They suppress the fire and still let people breathe long enough to get out. A smoke detector in the room triggers the release."},
+{s:"FA",t:"ms",c:4,q:"What does the fire alarm control panel do?",o:["Receives signals from detection devices","Transmits signals to alarm devices, indicating devices and auxiliary equipment","Furnishes normal and standby power to all other fire alarm devices","Supervises the circuitry","Supplies water to the sprinkler zones","Sets the building's occupancy group"],e:"It receives signals, transmits signals, furnishes power (normal and standby) and supervises circuitry. It contains the CPU, relays, switches and circuitry."},
+{s:"FA",t:"mc",q:"What are the control panel's three modes of operation?",o:["Normal, trouble, alarm","Standby, active, reset","Manual, automatic, coded","Wet, dry, pre-action"],e:"Normal, trouble and alarm."},
+{s:"FA",t:"mc",q:"What puts the control panel into trouble mode?",o:["Faults in wiring or a power failure","A pull station being operated","A sprinkler head opening","Smoke reaching a detector"],e:"Trouble means faults in wiring or power failure. The other three are alarm conditions."},
+{s:"FA",t:"mc",q:"What does the control panel do when there is no fire?",o:["It polls every connected device in turn and reports trouble if one fails to answer","It shuts down to save standby power","It tests the horns every hour","It idles until a device sends an alarm"],e:"That is supervision. The panel keeps asking each device, in sequence, whether the connection is good. Working is normal, a failed connection is trouble, and a real event is alarm."},
+{s:"FA",t:"mc",q:"How do horns, strobes and detectors get their power?",o:["From the fire alarm control panel, over the system wiring","Each one plugs into a nearby receptacle","From batteries inside each device","From the emergency lighting circuit"],e:"The panel furnishes power to every device, normal and standby, much as an old landline phone was powered through the phone line. The panel itself is about the size of an electrical panel, painted red, usually near the front lobby."},
+{s:"FA",t:"ms",c:4,q:"Which alarming methods does the lecture list?",o:["Non-coded, continuous alarm","Coded alarm","Voice alarm","Addressable systems","Single interlock","Rate of rise"],e:"Non-coded continuous alarm, coded alarm, voice alarm, and addressable systems."},
+{s:"FA",t:"mc",q:"How does a coded alarm differ from an addressable system?",o:["A coded alarm rings a pattern that tells listeners the location. An addressable system gives every device its own address, so the panel names the exact device","A coded alarm uses voice. An addressable system uses bells","A coded alarm is silent. An addressable system is audible","They are two names for the same thing"],e:"A non-coded alarm just rings. A coded alarm works like Morse code: the pattern identifies the building, floor or device. In an addressable system each device has an address, like an IP address, so firefighters know exactly where to go."},
+{s:"FA",t:"mc",q:"Under the high-rise code, the firefighters' control command post needs two-way communication to where?",o:["At least one fire station per floor, all mechanical equipment rooms, elevator machine rooms and air-handling rooms","The main lobby and the roof only","Every office and every stair landing","The fire pump room only"],e:"Two-way active communication from the command post (usually in the lobby) to at least one fire station per floor, all mechanical equipment rooms, elevator machine rooms, and air-handling (fan) rooms."},
+{s:"FA",t:"mc",q:"Alert tones and pre-recorded messages go out on independent channels. How are the channels split?",o:["One for paging, another for signal tones","One for each floor","One for fire, another for security","One for the fire department, another for the owner"],e:"Independent channels: one for paging, another for signal tones. A complete system of loudspeakers covering the building is part of it."},
+{s:"FA",t:"ms",c:6,q:"Which items does the high-rise code require at the command post? Select all that apply.",o:["Annunciation of all fire alarm devices, including sprinkler valves and water flow indicators","Fire pump status indication","Controls for any automatic stair door unlocking system","Emergency generator status","Elevator location indicators with operation and capture controls","Control of all air-handling units and smoke control devices","The fire department connection","The backflow preventer"],e:"The list also includes communication with the fire department or central station, and a means for testing all circuits and devices."},
+{s:"FA",t:"mc",q:"At what height do the high-rise fire alarm requirements start?",o:["When the highest floor is 75 ft or more above fire department access","At 30 ft above fire department access","At 150 ft above grade","At 10 stories, regardless of height"],e:"75 ft, measured to the floor of the highest story. The lecture's point for the exam: know that a building above or below 75 ft is treated differently, and the major things the high-rise code adds."},
+{s:"FA",t:"mc",q:"What do the air-handling units do when the fire alarm activates in a high-rise?",o:["Small units shut down, and units big enough go into smoke control mode","All units go to full recirculation","All units keep running normally","All units switch to 100% return air"],e:"Units that are not big enough shut down. Larger ones go into smoke control mode, with doors and dampers closing, and the fire chief can see and control them from the command center."},
+{s:"FA",t:"mc",q:"The lecture closes by asking whose responsibility fire protection is. What was the answer?",o:["Everybody: the electrical engineer, the mechanical engineer, the architect and the contractor","The electrical engineer, who designs the fire alarm","The architect alone","The fire department"],e:"It's everybody. The ECoRE examples showed what happens when the team does not pull together and the last details are not carried out."}
+]},
+{id:"figures",name:"Diagrams and graphs",blurb:"Point out components on system diagrams and read values off graphs. Click a numbered marker to answer.",qs:[
+{s:"L11",p:4,t:"pt",fig:"riser",a:[1],q:"Click the backflow preventer.",e:"Marker 1. It sits just inside the building, after the post indicator valve, and keeps fire system water out of the municipal supply. The notes show it as a double-check valve."},
+{s:"L11",p:4,t:"pt",fig:"riser",a:[3],q:"Click the jockey pump.",e:"Marker 3, the small pump piped around the fire pump (marker 5). It runs periodically to maintain system pressure."},
+{s:"L11",p:4,t:"pt",fig:"riser",a:[4],q:"Click the post indicator valve.",e:"Marker 4, outside the building on the supply from the street main (marker 2). The post shows whether the valve is open."},
+{s:"L11",p:4,t:"pt",fig:"riser",a:[6],q:"Click the fire department connection (siamese).",e:"Marker 6, on the outside wall where the pumper truck hooks up. It is the second water source once the fire department arrives."},
+{s:"L11",p:4,t:"pt",fig:"riser",a:[9],q:"Click the check valve that keeps water from exiting at the fire department connection.",e:"Marker 9, on the branch to the siamese. Marker 7 is the other check valve, on the fire pump discharge."},
+{s:"L11",p:4,t:"pt",fig:"riser",a:[10],q:"Click the outlet where the system must deliver 100 psi.",e:"Marker 10, the top of the riser, which is the most remote outlet. Lower floors are reduced to 85 psi max."},
+{s:"L11",p:4,t:"mc",fig:"riser",q:"Water enters at marker 2. In what order does it pass the numbered components on its way to the riser?",o:["2 → 4 → 1 → 5 → 7","2 → 1 → 4 → 5 → 7","2 → 4 → 5 → 1 → 7","2 → 6 → 9 → 5 → 7"],e:"Street main (2), post indicator valve (4), backflow preventer (1), fire pump (5), check valve (7), then the riser."},
+{s:"L11",p:10,t:"pt",fig:"branch",a:[1],q:"Click the device that detects water flow in the zone and reports it to the fire alarm.",e:"Marker 1, the flow switch. Its paddle sits in the pipe downstream of the control valve."},
+{s:"L11",p:10,t:"pt",fig:"branch",a:[5],q:"Click the device that monitors whether the control valve stays open.",e:"Marker 5, the tamper switch, mounted on the valve and wired to the fire alarm."},
+{s:"L11",p:10,t:"pt",fig:"branch",a:[3],q:"Click the OS&Y control valve.",e:"Marker 3. The rising stem shows at a glance whether the valve is open."},
+{s:"L11",p:11,t:"pt",fig:"branch",a:[4],q:"Click the test and drain valve.",e:"Marker 4. It drains the zone for service and tests the flow switch. The guest slides list both jobs for the zone valve assembly."},
+{s:"L11",p:11,t:"pt",fig:"branch",a:[2],q:"Click the 2½ in. hose valve for fire department use.",e:"Marker 2, on the standpipe riser itself. Marker 6 is a sprinkler head on the branch."},
+{s:"L12",p:7,t:"pt",fig:"plan",a:[2],q:"Click the cross main.",e:"Marker 2. The cross main runs from the riser (marker 4) and feeds every branch line."},
+{s:"L12",p:7,t:"pt",fig:"plan",a:[3],q:"Click a branch line.",e:"Marker 3. Branch lines carry the heads (marker 1), with 8 heads max on either side of the cross main."},
+{s:"L12",p:5,t:"mc",fig:"plan",q:"Count the heads in the plan. By the pipe schedule, what size is the cross main where it leaves the riser?",o:["2½ in.","2 in.","3 in.","1½ in."],e:"Seven branch lines with three heads each is 21 heads. 2 in. pipe stops at 10 sprinklers, and 2½ in. handles up to 30."},
+{s:"L11",p:12,t:"pt",fig:"head",a:[3],q:"Click the part that releases at the rated temperature.",e:"Marker 3, the fusible link (a glass bulb in many heads). When it lets go, water leaves the nozzle (marker 1)."},
+{s:"L11",p:12,t:"pt",fig:"head",a:[2],q:"Click the deflector.",e:"Marker 2. The deflector breaks the stream from the nozzle into a spray."},
+{s:"FA",t:"pt",fig:"alarm",a:[3],q:"Click the manual initiating device.",e:"Marker 3, the pull station. By code it sits within 5 ft of the exit."},
+{s:"FA",t:"pt",fig:"alarm",a:[1],q:"Click the indicating device that alerts hearing-impaired occupants.",e:"Marker 1, the horn strobe. The strobe is the visual signal, and it is also required in public washrooms."},
+{s:"FA",t:"pt",fig:"alarm",a:[5],q:"Click the detector made for a very large open space.",e:"Marker 5, the beam detector: a sender and a receiver with a light beam between them. Marker 4 is a spot smoke detector."},
+{s:"FA",t:"pt",fig:"alarm",a:[2],q:"Click the brain of the system, which powers and supervises every device.",e:"Marker 2, the fire alarm control panel."},
+{s:"FA",t:"pt",fig:"alarm",a:[6],q:"Click the annunciation panel.",e:"Marker 6, the small display near the entrance. It shows where the alarm is while the control panel sits elsewhere."},
+{s:"C10",t:"pt",fig:"egress",a:[3],q:"Click the exit access.",e:"Marker 3, the corridor. Exit access is the portion that leads from an occupied point to an exit."},
+{s:"C10",t:"pt",fig:"egress",a:[2],q:"Click the exit, the part that is temporarily as safe as outside.",e:"Marker 2, the enclosed stair, separated from the rest of the floor by fire-resistive construction."},
+{s:"C10",t:"pt",fig:"egress",a:[5],q:"Click the exit discharge.",e:"Marker 5, between the end of the exit and the public way."},
+{s:"C10",t:"pt",fig:"egress",a:[1],q:"Click the dead-end corridor.",e:"Marker 1, the corridor beyond the last stair. It is limited to 20 ft, or 50 ft if the building is sprinklered."},
+{s:"C10",t:"pt",fig:"egress",a:[4],q:"Click the area of refuge.",e:"Marker 4, the wheelchair space on the stair landing: 30 in. × 48 in., with two-way communication, one for each 200 occupants."},
+{s:"C10",t:"pt",fig:"sandwich",a:[3,5],q:"The fire is on the floor with the flame. Click a floor that the smoke control system pressurizes.",e:"Markers 3 and 5, the floors directly below and above the fire. The fire floor (marker 4) is exhausted, which makes a pressure sandwich. Every floor has to be able to switch between the two modes."},
+{s:"C10",t:"pt",fig:"sandwich",a:[2],q:"Click the space that is held at +0.15 to +0.35 in. of water column.",e:"Marker 2, the pressurized stair tower. The fan starts when the fire alarm activates."},
+{s:"L11",p:5,t:"pt",fig:"hydrant",a:[2],q:"Click the hydrant where static pressure and residual pressure are read.",e:"Marker 2, the hydrant with the gauge. Static is read with the other hydrant closed, and residual is read while the other hydrant flows."},
+{s:"L11",p:5,t:"pt",fig:"hydrant",a:[1],q:"Click the hydrant where velocity pressure is measured and converted to GPM.",e:"Marker 1, the flowing hydrant. The velocity pressure of the stream stands in for the flow rate."},
+{s:"C10",t:"pt",fig:"stair",a:[3],q:"Click the dimension limited to 7 in. maximum and 4 in. minimum.",e:"Marker 3, the riser. Marker 1 is the tread (11 in. minimum) and marker 2 is the nosing (½ in. radius)."},
+{s:"C10",t:"num",fig:"stair",a:12,tol:0,u:"in.",q:"The lecture's rule keeps riser plus tread (markers 3 and 1) at 18 in. If the riser is 6 in., what tread goes with it?",e:"18 − 6 = 12 in. The standard pair is 7 and 11."},
+{s:"JPA",t:"pt",fig:"pump",a:[3],q:"Click the churn point.",e:"Marker 3: zero flow, where pressure may reach at most 140% of design pressure."},
+{s:"JPA",t:"pt",fig:"pump",a:[2],q:"Click the point where the pump must still deliver 65% of design pressure.",e:"Marker 2, at 150% of design flow. Marker 1 is the design point, 100% flow at design pressure."},
+{s:"JPA",t:"num",fig:"pump",a:78,tol:0.5,u:"psi",q:"A pump is rated 1,000 GPM at 120 psi. What is the least pressure it may deliver at marker 2?",e:"Marker 2 is 150% flow, 1,500 GPM, where the pump must hold 65% of 120 psi = 78 psi."},
+{s:"L12",p:9,t:"pt",fig:"density",a:[5],q:"Click the Extra Hazard Group 2 curve.",e:"Marker 5, the curve farthest right: 0.40 GPM/ft² at 2,500 ft² down to 0.30 at 5,000 ft². Marker 4 is Extra Hazard Group 1."},
+{s:"L12",p:9,t:"pt",fig:"density",a:[1],q:"Click the light hazard curve.",e:"Marker 1, the curve farthest left: 0.10 GPM/ft² at 1,500 ft² down to 0.07 at 3,000 ft². Markers 2 and 3 are Ordinary Group 1 and Group 2."},
+{s:"L12",p:9,t:"num",fig:"density",a:0.10,tol:0.01,u:"GPM/ft²",q:"Read curve 2, Ordinary Hazard Group 1. What density does it require at 4,000 ft²?",e:"0.10 GPM/ft², which gives 400 GPM. At its other end the curve reads 0.15 at 1,500 ft²."},
+{s:"L12",p:9,t:"num",fig:"density",a:5000,tol:100,u:"ft²",q:"Read curve 5. What area of sprinkler operation goes with a density of 0.30 GPM/ft²?",e:"5,000 ft², for a system flow of 1,500 GPM."},
+{s:"S10",t:"num",fig:"tod",a:56,tol:3,u:"%",q:"Read the chart. About what percentage of fire casualties occur between midnight and 8 AM?",e:"36.8% from midnight to 4 AM plus 19.2% from 4 to 8 AM is 56%."},
+{s:"S10",t:"mc",fig:"tod",q:"Which statement does the chart support?",o:["More than a third of casualties fall in the four hours after midnight","Casualties are spread evenly through the day","The afternoon is the most dangerous period","Casualties peak between 8 PM and midnight"],e:"Midnight to 4 AM carries 36.8%. The two afternoon blocks are the lowest, at about 9% each."},
+{s:"L10",t:"pt",fig:"stages",a:[3],q:"Click established burning, the 10-inch flame.",e:"Marker 3. The order is overheat, ignition, established burning, sustained burning, flame at ceiling, full room involvement."},
+{s:"L10",t:"pt",fig:"stages",a:[6],q:"Click flash-over.",e:"Marker 6, full room involvement, when all combustibles in the room are burning."},
+{s:"L10",t:"pt",fig:"stages",a:[4],q:"Click the stage of a single stuffed chair burning with a 6 ft flame.",e:"Marker 4, sustained burning. Marker 5, flame at ceiling, is the two-chair fire."}
+]}
+];
+
+/* ---------- setup ---------- */
+var ORDER=["context","theory","growth","codes","standpipes","supply","sprinklers","design","alarm","egress","figures","calcs"];
+SECTIONS.sort(function(a,b){return ORDER.indexOf(a.id)-ORDER.indexOf(b.id);});
+var ALL=[];
+SECTIONS.forEach(function(sec){sec.qs.forEach(function(q,i){q.id=sec.id+"-q"+(i+1);q.sec=sec;q.n=ALL.length+1;ALL.push(q);});});
+var KEY="ae202-fire-review-v3";
+var st={ans:{},done:{},self:{},shown:{},mode:"study",graded:false};
+try{var saved=JSON.parse(localStorage.getItem(KEY)||"null");if(saved&&saved.ans){for(var k in st){if(saved[k]!==undefined)st[k]=saved[k];}}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}}
+
+function h(tag,props){
+  var e=document.createElement(tag),i,k;
+  if(props){for(k in props){var v=props[k];
+    if(k==="class")e.className=v;else if(k==="text")e.textContent=v;
+    else if(k.slice(0,2)==="on")e.addEventListener(k.slice(2),v);
+    else if(v===true)e.setAttribute(k,"");else if(v!==false&&v!=null)e.setAttribute(k,v);}}
+  for(i=2;i<arguments.length;i++){var c=arguments[i];if(c==null||c===false)continue;
+    if(Array.isArray(c)){c.forEach(function(x){if(x!=null&&x!==false)e.append(x.nodeType?x:document.createTextNode(x));});}
+    else e.append(c.nodeType?c:document.createTextNode(c));}
+  return e;
+}
+function hash(s){var x=2166136261;for(var i=0;i<s.length;i++){x^=s.charCodeAt(i);x=Math.imul(x,16777619);}return x>>>0;}
+function perm(n,seed){var a=[],i,x=seed||1;for(i=0;i<n;i++)a.push(i);
+  function r(){x^=x<<13;x>>>=0;x^=x>>>17;x^=x<<5;x>>>=0;return x/4294967296;}
+  for(i=n-1;i>0;i--){var j=Math.floor(r()*(i+1)),t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function parseNum(s){if(s==null)return NaN;s=String(s).replace(/,/g,"").replace(/[^0-9.\-]/g,"");return s===""?NaN:parseFloat(s);}
+function fmt(n){return (Math.round(n*1000)/1000).toLocaleString("en-US");}
+
+function answered(q){var a=st.ans[q.id];
+  if(q.t==="mc"||q.t==="tf")return a!==undefined&&a!==null;
+  if(q.t==="ms")return Array.isArray(a)&&a.length>0;
+  if(q.t==="pt")return typeof a==="number";
+  if(q.t==="num")return !isNaN(parseNum(a));
+  return st.self[q.id]!==undefined;}
+function isDone(q){if(q.t==="sa")return st.self[q.id]!==undefined;return st.graded||!!st.done[q.id];}
+function correct(q){var a=st.ans[q.id];
+  if(q.t==="mc")return a===0;
+  if(q.t==="tf")return a===q.a;
+  if(q.t==="ms"){if(!Array.isArray(a)||a.length!==q.c)return false;return a.every(function(i){return i<q.c;});}
+  if(q.t==="pt")return q.a.indexOf(a)>=0;
+  if(q.t==="num"){var v=parseNum(a);return !isNaN(v)&&Math.abs(v-q.a)<=q.tol+1e-9;}
+  return st.self[q.id]===1;}
+function tally(list){var o={total:list.length,answered:0,done:0,right:0};
+  list.forEach(function(q){if(answered(q))o.answered++;if(isDone(q)){o.done++;if(correct(q))o.right++;}});return o;}
+
+/* ---------- figures ---------- */
+var FIGS={};
+function smooth(p){var d="M"+p[0][0]+" "+p[0][1];for(var i=0;i<p.length-1;i++){var a=p[i-1]||p[i],b=p[i],c=p[i+1],e=p[i+2]||c;
+  d+="C"+(b[0]+(c[0]-a[0])/6).toFixed(1)+" "+(b[1]+(c[1]-a[1])/6).toFixed(1)+" "+(c[0]-(e[0]-b[0])/6).toFixed(1)+" "+(c[1]-(e[1]-b[1])/6).toFixed(1)+" "+c[0]+" "+c[1];}return d;}
+function valve(x,y){return '<path class="ff" d="M'+(x-9)+' '+(y-7)+'L'+(x+9)+' '+(y+7)+'V'+(y-7)+'L'+(x-9)+' '+(y+7)+'Z"/>';}
+function valveV(x,y){return '<path class="ff" d="M'+(x-7)+' '+(y-9)+'L'+(x+7)+' '+(y+9)+'H'+(x-7)+'L'+(x+7)+' '+(y-9)+'Z"/>';}
+function chk(x,y){return '<rect class="ff" x="'+(x-9)+'" y="'+(y-8)+'" width="18" height="16"/><path class="fl" d="M'+(x-9)+' '+(y+8)+'L'+(x+9)+' '+(y-8)+'"/>';}
+function pump(x,y,r){return '<circle class="ff" cx="'+x+'" cy="'+y+'" r="'+r+'"/><path class="fk" d="M'+(x-r*0.45)+' '+(y-r*0.55)+'L'+(x+r*0.65)+' '+y+'L'+(x-r*0.45)+' '+(y+r*0.55)+'Z"/>';}
+function T(x,y,s,anchor){return '<text class="ft" x="'+x+'" y="'+y+'"'+(anchor?' text-anchor="'+anchor+'"':'')+'>'+s+'</text>';}
+function TV(x,y,s){return '<text class="ft" transform="rotate(-90 '+x+' '+y+')" x="'+x+'" y="'+y+'" text-anchor="middle">'+s+'</text>';}
+function L(c,x1,y1,x2,y2){return '<line class="'+c+'" x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'"/>';}
+(function(){
+  var b,x,y,i;
+
+  /* standpipe and fire pump riser */
+  b=L("fb",0,320,720,320)+'<rect class="fb" x="230" y="40" width="370" height="280"/>';
+  [90,140,190].forEach(function(y){b+=L("fb",230,y,600,y);});
+  b+='<path class="fw" d="M45 270H540V24H566"/><path class="fw" d="M335 270V232H425V270"/><path class="fw" d="M540 245H628"/>';
+  b+='<circle class="ff" cx="34" cy="270" r="11"/>'+T(34,304,"street","middle");
+  b+=valve(120,270)+L("fl",120,263,120,232)+'<rect class="ff" x="113" y="222" width="14" height="10"/>';
+  b+='<rect class="ff" x="263" y="259" width="44" height="22"/><path class="fl" d="M270 276L280 264M290 276L300 264"/>';
+  b+=pump(380,232,9)+pump(380,270,15)+chk(470,270)+chk(572,245);
+  [65,115,165,215].forEach(function(y){b+='<path class="fw" d="M540 '+y+'H523"/>'+valve(514,y)+'<rect class="ff" x="487" y="'+(y-9)+'" width="18" height="18"/>';});
+  b+=valve(556,24)+'<path class="fl" d="M628 245L644 236M628 245L644 254"/><circle class="ff" cx="646" cy="235" r="3"/><circle class="ff" cx="646" cy="255" r="3"/>';
+  FIGS.riser={w:720,h:340,body:b,cap:"Standpipe and fire pump riser diagram (schematic)",
+    hs:[[285,236],[34,240],[380,208],[120,204],[380,300],[666,245],[470,296],[462,115],[572,221],[592,24]]};
+
+  /* floor branch: control valve, switches, test and drain */
+  b='<path class="fw" d="M90 20V290"/><path class="fw" d="M90 130H640"/><path class="fw" d="M350 130V228"/><path class="fw" d="M90 220H112"/>';
+  b+=valve(170,130)+'<path class="fl" d="M170 123V100M160 100H180"/><rect class="ff" x="176" y="104" width="16" height="12"/>';
+  b+='<rect class="ff" x="251" y="106" width="18" height="14"/><path class="fl" d="M260 120V136"/>';
+  b+='<path class="fd" d="M184 104V60H330M260 106V60"/>'+T(336,64,"to fire alarm panel");
+  b+=valveV(350,178)+'<path class="fl" d="M338 228H362L355 244H345Z"/>'+T(370,244,"drain");
+  b+=valve(122,220)+'<path class="fl" d="M131 213V227"/>';
+  b+=L("fb",400,94,690,94)+T(690,88,"ceiling","end");
+  [440,520,600].forEach(function(x){b+='<path class="fl" d="M'+x+' 130V117M'+(x-8)+' 108H'+(x+8)+'"/><circle class="ff" cx="'+x+'" cy="113" r="4"/>';});
+  b+=T(98,288,"standpipe riser");
+  FIGS.branch={w:720,h:300,body:b,cap:"Sprinkler branch on one floor (schematic)",
+    hs:[[260,162],[152,220],[170,162],[384,178],[214,110],[560,113]]};
+
+  /* piping plan */
+  b='<rect class="fb" x="40" y="30" width="640" height="250"/><path class="fw" d="M70 240H650" style="stroke-width:5"/>';
+  [110,200,290,380,470,560,650].forEach(function(x){b+='<path class="fw" d="M'+x+' 240V75" style="stroke-width:2"/>';
+    [75,130,185].forEach(function(y){b+='<circle class="ff" cx="'+x+'" cy="'+y+'" r="5"/>';});});
+  b+='<circle class="ff" cx="70" cy="240" r="9"/>';
+  FIGS.plan={w:720,h:300,body:b,cap:"Sprinkler piping plan for one room",
+    hs:[[320,130,296,130],[425,262],[498,103,472,103],[70,208]]};
+
+  /* sprinkler head */
+  b='<rect class="ff" x="110" y="208" width="200" height="22"/><rect class="ff" x="196" y="176" width="28" height="32"/><path class="fl" d="M196 186H224M196 196H224"/>';
+  b+='<path class="fl" d="M200 176C176 140 184 100 210 84C236 100 244 140 220 176"/><rect class="ff" x="205" y="104" width="10" height="72" rx="5"/>';
+  b+='<path class="fl" d="M172 80H248" style="stroke-width:5"/><path class="fl" d="M180 80V72M195 80V72M210 80V70M225 80V72M240 80V72"/>';
+  FIGS.head={w:420,h:250,body:b,cap:"Upright sprinkler head",hs:[[282,192,226,192],[296,80,252,80],[136,140,203,140]]};
+
+  /* fire alarm devices */
+  b='<path class="fb" d="M40 60H680V260H40Z"/>'+L("fb",180,60,180,260);
+  b+='<rect class="ff" x="70" y="130" width="70" height="100"/><rect class="ff" x="82" y="142" width="46" height="18"/><circle class="fk" cx="90" cy="176" r="3"/><circle class="fk" cx="104" cy="176" r="3"/><circle class="fk" cx="118" cy="176" r="3"/>';
+  b+='<rect class="fb" x="640" y="160" width="36" height="100"/><rect class="ff" x="634" y="134" width="46" height="18"/>'+T(657,148,"EXIT","middle");
+  b+='<rect class="ff" x="612" y="196" width="14" height="18"/><path class="fl" d="M615 203H623M619 203V209"/>';
+  b+='<rect class="ff" x="560" y="84" width="22" height="28"/><rect class="fk" x="565" y="89" width="12" height="8"/><path class="fl" d="M565 104H577"/>';
+  b+='<path class="ff" d="M300 60H336L329 73H307Z"/>';
+  b+='<rect class="ff" x="181" y="113" width="16" height="14"/><rect class="ff" x="663" y="113" width="16" height="14"/><path class="fd" d="M197 120H663"/>';
+  b+='<rect class="ff" x="540" y="180" width="30" height="22"/><rect class="fk" x="545" y="185" width="20" height="7"/>';
+  b+=T(110,252,"back room","middle")+T(410,252,"lobby","middle");
+  FIGS.alarm={w:720,h:290,body:b,cap:"Fire alarm devices in a lobby (elevation, schematic)",
+    hs:[[532,98],[110,108],[612,172],[318,94],[430,120],[555,224]]};
+
+  /* means of egress plan */
+  b='<rect class="fb" x="60" y="40" width="600" height="200" style="stroke-width:2.5"/><path class="fb" d="M150 120H660M150 160H430M520 160H660"/>';
+  [250,350,450,550].forEach(function(x){b+=L("fb",x,40,x,120);});
+  [250,350,600].forEach(function(x){b+=L("fb",x,160,x,240);});
+  b+='<rect class="fx" x="60" y="90" width="90" height="100"/>';
+  for(x=92;x<=140;x+=8)b+=L("fb",x,96,x,140);
+  b+='<rect class="ff" x="120" y="160" width="20" height="24"/><circle class="fb" cx="130" cy="172" r="6"/>';
+  b+='<rect class="fx" x="430" y="160" width="90" height="80"/>';
+  for(x=440;x<=510;x+=8)b+=L("fb",x,192,x,234);
+  b+=L("gap",150,128,150,150)+L("gap",60,162,60,186)+L("gap",462,160,488,160)+L("gap",462,240,488,240);
+  b+='<path class="fd" d="M60 174H30V292M475 240V292"/>'+L("fl",0,292,720,292)+T(360,312,"public way","middle");
+  FIGS.egress={w:720,h:322,body:b,cap:"Floor plan with two stairs",
+    hs:[[590,140],[116,116],[300,140],[98,172],[30,236]]};
+
+  /* smoke control section */
+  b='<rect class="fb" x="120" y="30" width="300" height="264" style="stroke-width:2.5"/>';
+  [74,118,162,206,250].forEach(function(y){b+=L("fb",120,y,340,y);});
+  b+='<rect class="fx" x="340" y="30" width="80" height="264"/><path class="fb" d="M350 290L410 250L350 206L410 162L350 118L410 74L350 34"/>';
+  for(i=0;i<6;i++)b+=T(108,57+44*i,"floor "+(6-i),"end");
+  b+='<path class="fflame" d="M200 202c-11 0-15-9-10-18c2 5 6 5 6 0c0-8 6-11 6-17c8 7 13 16 11 24c-1 7-6 11-13 11z"/>'+L("fl",40,294,480,294);
+  FIGS.sandwich={w:520,h:312,body:b,cap:"High-rise section with a fire on floor 3",
+    hs:[[270,96],[380,140],[270,228],[270,184],[270,140]]};
+
+  /* hydrant flow test */
+  function hyd(x){return '<rect class="ff" x="'+(x-5)+'" y="150" width="10" height="38"/><rect class="ff" x="'+(x-12)+'" y="110" width="24" height="42"/><path class="ff" d="M'+(x-12)+' 110Q'+x+' 84 '+(x+12)+' 110Z"/><rect class="ff" x="'+(x+12)+'" y="122" width="10" height="10"/>';}
+  b=L("fb",0,152,720,152)+'<path class="fl" d="M40 188H680M40 204H680"/>'+T(360,226,"municipal water main","middle");
+  b+=hyd(200)+'<path class="fl" d="M222 127H236V118"/><circle class="ff" cx="236" cy="106" r="12"/><path class="fl" d="M236 106L243 99"/>';
+  b+=hyd(520)+'<path class="fw" d="M544 127Q600 122 652 150" style="stroke-dasharray:2 7"/><path class="fl" d="M556 124V104"/><circle class="ff" cx="556" cy="92" r="12"/><path class="fl" d="M556 92L549 85"/>';
+  FIGS.hydrant={w:720,h:240,body:b,cap:"Hydrant flow test",hs:[[484,104],[164,104]]};
+
+  /* stair profile */
+  b='<path class="ff" d="M40 200H120V150H200V100H280V50H380V225H40Z"/>';
+  b+='<path class="fl" d="M200 84H280M200 78V90M280 78V90" style="stroke-width:1.5"/><path class="fl" d="M298 50V100M292 50H304M292 100H304" style="stroke-width:1.5"/>';
+  b+='<circle class="lead" cx="120" cy="150" r="7" fill="none"/>';
+  FIGS.stair={w:420,h:240,body:b,cap:"Stair profile",hs:[[240,62],[80,118,115,145],[330,76]]};
+
+  /* fire pump curve */
+  var X=function(f){return 70+f*2.8125;},Y=function(p){return 270-p*1.5;};
+  b="";
+  [0,50,100,150].forEach(function(v){b+=L("gr",70,Y(v),520,Y(v))+T(62,Y(v)+4,v,"end")+L("gr",X(v),30,X(v),270)+T(X(v),288,v,"middle");});
+  b+='<path class="ax" d="M70 30V270H520"/><path class="fw" d="'+smooth([[70,60],[210,78],[351.25,120],[491.9,172.5],[520,186]])+'"/>';
+  [[70,60],[351.25,120],[491.9,172.5]].forEach(function(p){b+='<circle class="pt" cx="'+p[0]+'" cy="'+p[1]+'" r="5"/>';});
+  b+=T(295,310,"Flow, % of rated","middle")+TV(18,150,"Pressure, % of rated");
+  FIGS.pump={w:560,h:320,body:b,cap:"Fire pump performance curve",hs:[[386,96,355,117],[524,150,496,170],[106,40,74,57]]};
+
+  /* density / area curves */
+  X=function(d){return 70+(d-0.05)*1400;};Y=function(a){return 290-(a-1500)*260/3500;};
+  b="";
+  for(i=0;i<8;i++){var d=0.05+i*0.05;b+=L("gr",X(d),30,X(d),290)+T(X(d),308,d.toFixed(2),"middle");}
+  [1500,2000,2500,3000,4000,5000].forEach(function(a){b+=L("gr",70,Y(a),560,Y(a))+T(62,Y(a)+4,a.toLocaleString("en-US"),"end");});
+  b+='<path class="ax" d="M70 30V290H560"/>';
+  var lines=[[0.10,1500,0.07,3000],[0.15,1500,0.10,4000],[0.20,1500,0.15,4000],[0.30,2500,0.20,5000],[0.40,2500,0.30,5000]];
+  lines.forEach(function(l){b+=L("fw",X(l[0]),Y(l[1]),X(l[2]),Y(l[3]));});
+  b+=T(315,332,"Density, GPM per ft²","middle")+TV(14,160,"Area of sprinkler operation, ft²");
+  FIGS.density={w:600,h:344,body:b,cap:"Density / area curves",
+    hs:lines.map(function(l){return [(X(l[0])+X(l[2]))/2,(Y(l[1])+Y(l[3]))/2];})};
+
+  /* casualties by time of day */
+  Y=function(v){return 250-v*5.25;};
+  b="";
+  [0,10,20,30,40].forEach(function(v){b+=L("gr",60,Y(v),570,Y(v))+T(52,Y(v)+4,v,"end");});
+  var vals=[36.8,19.2,12.5,9.3,9.2,12.8],labs=["Midnight–4","4–8 AM","8–Noon","Noon–4","4–8 PM","8–Midnight"];
+  vals.forEach(function(v,i){var c=60+(i+0.5)*85,x0=c-26,y0=Y(v);
+    b+='<path class="fa" d="M'+x0+' '+(y0+4)+'a4 4 0 0 1 4 -4h44a4 4 0 0 1 4 4V250H'+x0+'Z"/>'+T(c,270,labs[i],"middle");});
+  b+=L("ax",60,250,570,250)+TV(16,145,"% of casualties");
+  FIGS.tod={w:600,h:284,body:b,cap:"Fire casualties by time of day (Lecture 10.1)",hs:[]};
+
+  /* stages of fire */
+  var pts=[[80,249],[170,244],[260,231],[350,200],[430,140],[520,60]];
+  b='<path class="ax" d="M50 20V260H570"/><path class="fw" d="'+smooth([[50,250]].concat(pts,[[548,36]]))+'"/>';
+  pts.forEach(function(p){b+='<circle class="pt" cx="'+p[0]+'" cy="'+p[1]+'" r="5"/>';});
+  b+=T(310,284,"Time","middle")+TV(26,140,"Fire size (schematic)");
+  FIGS.stages={w:600,h:296,body:b,cap:"Fire growth over time, with the six stages marked in order",
+    hs:pts.map(function(p){return [p[0]-10,p[1]-24,p[0]-2,p[1]-6];})};
+})();
+function figure(q,done){
+  var f=FIGS[q.fig],live=q.t==="pt"&&!done,s="";
+  s+='<svg viewBox="0 0 '+f.w+' '+f.h+'" role="img" aria-label="'+f.cap+'" style="max-width:'+f.w+'px;min-width:'+Math.min(460,f.w)+'px">'+f.body;
+  f.hs.forEach(function(p){if(p.length>2)s+=L("lead",p[0],p[1],p[2],p[3]);});
+  f.hs.forEach(function(p,i){
+    var n=i+1,cls="hs";
+    if(q.t==="pt"){var sel=st.ans[q.id]===n,right=q.a.indexOf(n)>=0;
+      if(done){if(right)cls+=" ok";else if(sel)cls+=" no";}else{cls+=" live";if(sel)cls+=" sel";}}
+    s+='<g class="'+cls+'" data-n="'+n+'"'+(live?' tabindex="0" role="button" aria-label="Marker '+n+'"':'')+'><circle cx="'+p[0]+'" cy="'+p[1]+'" r="12"/><text x="'+p[0]+'" y="'+p[1]+'">'+n+'</text>'+(live?'<circle class="hit" cx="'+p[0]+'" cy="'+p[1]+'" r="18"/>':'')+'</g>';
+  });
+  s+="</svg>";
+  var wrap=h("div",{class:"fig"});wrap.innerHTML=s;
+  if(live){Array.prototype.forEach.call(wrap.querySelectorAll(".hs"),function(g){
+    function pick(){st.ans[q.id]=+g.getAttribute("data-n");save();refresh(q);var t=document.querySelector("#"+q.id+" .hs.sel");if(t)t.focus({preventScroll:true});}
+    g.addEventListener("click",pick);
+    g.addEventListener("keydown",function(ev){if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();pick();}});});}
+  return h("div",{class:"figwrap"},wrap,h("p",{class:"figcap",text:f.cap}));
+}
+
+/* ---------- question card ---------- */
+var TYPE={mc:"Choose one",tf:"True or false",ms:"Select all that apply",num:"Numeric answer",sa:"Short answer, self-graded",pt:"Click a marker on the diagram"};
+function srcLabel(q){return SRC[q.s]+(q.p?" · notes p. "+q.p:"");}
+function card(q){
+  var done=isDone(q),ok=done&&correct(q),study=st.mode==="study";
+  var el=h("section",{class:"card"+(done?(ok?" right":" wrong"):""),id:q.id,"aria-label":"Question "+q.n});
+  el.append(h("div",{class:"qmeta"},
+    h("span",{class:"qnum",text:"Q"+q.n}),
+    h("span",{class:"pill src",text:srcLabel(q)}),
+    h("span",{class:"pill",text:TYPE[q.t]}),
+    q.b?h("span",{class:"pill blank",text:"Blank in your notes"}):null,
+    done?h("span",{class:"pill "+(ok?"ok":"no"),text:ok?"Correct":(q.t==="sa"?"Missed":(answered(q)?"Incorrect":"Not answered"))}):null));
+  el.append(h("p",{class:"prompt",text:q.q}));
+  if(q.fig)el.append(figure(q,done));
+
+  if(q.t==="mc"||q.t==="ms"||q.t==="tf"){
+    var opts=q.t==="tf"?["True","False"]:q.o;
+    var order=q.t==="tf"?[0,1]:perm(opts.length,hash(q.id));
+    var fs=h("fieldset",{class:"opts"});
+    fs.append(h("legend",{style:"position:absolute;left:-9999px",text:"Options for question "+q.n}));
+    order.forEach(function(oi){
+      var val=q.t==="tf"?(oi===0):oi;
+      var chosen=q.t==="ms"?(Array.isArray(st.ans[q.id])&&st.ans[q.id].indexOf(oi)>=0):st.ans[q.id]===val;
+      var right=q.t==="mc"?oi===0:q.t==="tf"?val===q.a:oi<q.c;
+      var cls="opt";
+      if(done){cls+=" locked";if(right)cls+=" is-right";else if(chosen)cls+=" is-wrong";}
+      var inp=h("input",{type:q.t==="ms"?"checkbox":"radio",name:q.id,id:q.id+"-o"+oi,disabled:done});
+      inp.checked=!!chosen;
+      inp.addEventListener("change",function(){
+        if(q.t==="ms"){var cur=Array.isArray(st.ans[q.id])?st.ans[q.id].slice():[];var ix=cur.indexOf(oi);
+          if(inp.checked&&ix<0)cur.push(oi);if(!inp.checked&&ix>=0)cur.splice(ix,1);st.ans[q.id]=cur;}
+        else st.ans[q.id]=val;
+        save();updateChrome();var b=el.querySelector("[data-check]");if(b)b.disabled=!answered(q);});
+      fs.append(h("label",{class:cls,"for":q.id+"-o"+oi},inp,h("span",{text:opts[oi]})));
+    });
+    el.append(fs);
+  }
+  if(q.t==="num"){
+    var ni=h("input",{type:"text",inputmode:"decimal",id:q.id+"-n",autocomplete:"off",disabled:done,"aria-label":"Answer in "+q.u});
+    ni.value=st.ans[q.id]||"";
+    ni.addEventListener("input",function(){st.ans[q.id]=ni.value;save();updateChrome();var b=el.querySelector("[data-check]");if(b)b.disabled=!answered(q);});
+    ni.addEventListener("keydown",function(ev){if(ev.key==="Enter"&&study&&answered(q)){st.done[q.id]=true;save();refresh(q);}});
+    el.append(h("div",{class:"numrow"},ni,h("span",{text:q.u})));
+  }
+  if(q.t==="sa"){
+    var ta=h("textarea",{id:q.id+"-t",placeholder:"Write your answer, then compare it with the model answer.","aria-label":"Your answer"});
+    ta.value=st.ans[q.id]||"";
+    ta.addEventListener("input",function(){st.ans[q.id]=ta.value;save();});
+    el.append(ta);
+  }
+
+  var act=h("div",{class:"actions"});
+  if(q.t==="sa"){
+    var reveal=st.shown[q.id]||st.graded||done;
+    if(!reveal&&study)act.append(h("button",{class:"btn",type:"button",onclick:function(){st.shown[q.id]=true;save();refresh(q);}},"Show model answer"));
+    if(reveal&&!done){
+      act.append(h("button",{class:"btn good",type:"button",onclick:function(){st.self[q.id]=1;save();refresh(q);}},"I had it"));
+      act.append(h("button",{class:"btn bad",type:"button",onclick:function(){st.self[q.id]=0;save();refresh(q);}},"I missed it"));
+    }
+  } else if(study&&!done){
+    act.append(h("button",{class:"btn",type:"button","data-check":"1",disabled:!answered(q),onclick:function(){st.done[q.id]=true;save();refresh(q);}},"Check answer"));
+  }
+  if(done&&!st.graded){
+    act.append(h("button",{class:"btn ghost",type:"button",onclick:function(){delete st.done[q.id];delete st.self[q.id];delete st.shown[q.id];delete st.ans[q.id];save();refresh(q);}},"Try again"));
+  }
+  if(act.childNodes.length)el.append(act);
+
+  var showFb=done||(q.t==="sa"&&(st.shown[q.id]||st.graded));
+  if(showFb){
+    var fb=h("div",{class:"fb"});
+    if(q.t==="num")fb.append(h("p",{class:"ans",text:"Answer: "+fmt(q.a)+" "+q.u+(q.tol?"  (accepted within ±"+q.tol+")":"")}));
+    if(q.t==="pt")fb.append(h("p",{class:"ans",text:"Answer: marker "+q.a.join(" or ")}));
+    if(q.t==="mc")fb.append(h("p",{class:"ans",text:"Answer: "+q.o[0]}));
+    if(q.t==="tf")fb.append(h("p",{class:"ans",text:"Answer: "+(q.a?"True":"False")}));
+    if(q.t==="sa"){fb.append(h("span",{class:"lab",text:"Model answer"}));fb.append(h("p",{text:q.m}));}
+    else fb.append(h("p",{text:q.e}));
+    el.append(fb);
+  }
+  return el;
+}
+function refresh(q){var old=document.getElementById(q.id);if(old)old.replaceWith(card(q));updateChrome();}
+
+/* ---------- views ---------- */
+var current="overview";
+function viewIds(){return ["overview"].concat(SECTIONS.map(function(s){return s.id;}),["results"]);}
+function go(id,qid){if(viewIds().indexOf(id)<0)id="overview";current=id;
+  try{if(location.hash!=="#"+id)history.replaceState(null,"","#"+id);}catch(e){}
+  render();
+  var target=qid?document.getElementById(qid):null;
+  if(target)target.scrollIntoView();else window.scrollTo(0,0);}
+function sectionNav(i){
+  var prev=i>0?SECTIONS[i-1]:null,next=i<SECTIONS.length-1?SECTIONS[i+1]:null;
+  return h("div",{class:"next"},
+    prev?h("button",{class:"btn ghost",type:"button",onclick:function(){go(prev.id);}},"← "+prev.name):h("span"),
+    h("button",{class:"btn",type:"button",onclick:function(){go(next?next.id:"results");}},next?next.name+" →":"See results →"));
+}
+function overview(){
+  var rows=SECTIONS.map(function(s,i){var srcs={};s.qs.forEach(function(q){srcs[SRC[q.s]]=1;});
+    return h("tr",null,h("td",{class:"num",text:String(i+1)}),h("td",null,h("a",{href:"#"+s.id,text:s.name})),h("td",{text:Object.keys(srcs).join(", ")}),h("td",{class:"num",text:String(s.qs.length)}));});
+  return [
+    h("div",{class:"sec-head"},h("h2",{text:"Overview"}),h("p",{text:"A review test built from the thirteen files in this project: lecture slides, your note packets and two lecture transcripts. Every question names the lecture it came from, and every answer comes with an explanation."})),
+    h("div",{class:"panel"},h("h3",{text:"Sections"}),
+      h("div",{class:"tablewrap"},h("table",null,h("thead",null,h("tr",null,h("th",{class:"num",text:"No."}),h("th",{text:"Section"}),h("th",{text:"Drawn from"}),h("th",{class:"num",text:"Questions"}))),h("tbody",null,rows))),
+      h("div",{class:"actions"},h("button",{class:"btn",type:"button",onclick:function(){go(SECTIONS[0].id);}},"Start section 1 →"))),
+    h("div",{class:"panel"},h("h3",{text:"How it works"}),h("ul",null,
+      h("li",{text:"Study mode checks each answer as you go. Exam mode holds all feedback until you grade the test on the Results page."}),
+      h("li",{text:"Select-all questions are all or nothing. Numeric questions accept a small rounding tolerance. Short answers show a model answer and you mark yourself."}),
+      h("li",{text:"Diagram questions ask you to point something out. Click a numbered marker on the drawing, then check it."}),
+      h("li",{text:"Progress is saved in this browser. Results lists every miss with a link back to the question."}))),
+    h("div",{class:"panel"},h("h3",{text:"How source conflicts are settled"}),h("ul",null,
+      h("li",{text:"Where a lecture and the guest slides disagree, the guest slides are the answer. That covers the standpipe maximum flow (1,000 GPM sprinklered, 1,250 GPM non-sprinklered), the head temperature rating (135 to 155°F), the fire pump driver (almost always electric) and the residential share of fire deaths (75%)."}),
+      h("li",{text:"Each of those explanations also names the older lecture figure, so you recognize it if it comes up."}),
+      h("li",{text:"The flow-test example states its pressures as givens. No question asks you to read a pressure off either graph."}),
+      h("li",{text:"A source tag with a notes page points to your handwritten note packet. The rest point to the lecture slides."})))
+  ];
+}
+function results(){
+  var t=tally(ALL),pct=t.done?Math.round(100*t.right/t.done):0,out=[];
+  out.push(h("div",{class:"sec-head"},h("h2",{text:"Results"}),h("p",{text:st.graded?"The whole test is graded. Unanswered questions count as misses.":"Scores count the questions you have checked so far."})));
+  var saLeft=ALL.filter(function(q){return q.t==="sa"&&st.self[q.id]===undefined;}).length;
+  var p=h("div",{class:"panel"});
+  p.append(h("div",{class:"bigscore"},h("b",{text:t.right+" / "+t.done}),h("span",{text:pct+"% of checked questions · "+(t.total-t.done)+" of "+t.total+" not yet checked"})));
+  if(st.graded&&saLeft)p.append(h("p",{text:saLeft+" short-answer questions still need you to compare with the model answer and mark yourself."}));
+  var acts=h("div",{class:"actions"});
+  if(!st.graded)acts.append(h("button",{class:"btn",type:"button",onclick:function(){st.graded=true;save();render();}},"Grade the whole test now"));
+  acts.append(h("button",{class:"btn ghost",type:"button",onclick:function(){
+    ALL.forEach(function(q){if(isDone(q)&&!correct(q)){delete st.ans[q.id];delete st.done[q.id];delete st.self[q.id];delete st.shown[q.id];}});
+    if(st.graded){ALL.forEach(function(q){if(q.t!=="sa"&&answered(q))st.done[q.id]=true;});st.graded=false;}
+    save();render();}},"Retry the questions I missed"));
+  var armed=false;
+  var resetBtn=h("button",{class:"btn ghost",type:"button"},"Start over");
+  resetBtn.addEventListener("click",function(){if(!armed){armed=true;resetBtn.textContent="Click again to erase all answers";return;}
+    st={ans:{},done:{},self:{},shown:{},mode:st.mode,graded:false};save();go("overview");});
+  acts.append(resetBtn);p.append(acts);out.push(p);
+
+  function table(title,groups){
+    var rows=groups.map(function(g){var x=tally(g.qs),w=x.total?100*x.right/x.total:0;
+      return h("tr",null,h("td",null,g.id?h("a",{href:"#"+g.id,text:g.name}):g.name),
+        h("td",{class:"num",text:x.right+" / "+x.done}),h("td",{class:"num",text:String(x.total)}),
+        h("td",null,h("div",{class:"bar"},h("i",{class:"ok",style:"width:"+w+"%"}))));});
+    return h("div",{class:"panel"},h("h3",{text:title}),h("div",{class:"tablewrap"},h("table",null,
+      h("thead",null,h("tr",null,h("th",{text:"Group"}),h("th",{class:"num",text:"Correct / checked"}),h("th",{class:"num",text:"Questions"}),h("th",{text:"Correct of all"}))),h("tbody",null,rows))));
+  }
+  out.push(table("By section",SECTIONS));
+  out.push(table("By source",Object.keys(SRC).map(function(k){return {name:SRC[k],qs:ALL.filter(function(q){return q.s===k;})};})));
+
+  var miss=ALL.filter(function(q){return isDone(q)&&!correct(q);});
+  var mp=h("div",{class:"panel"},h("h3",{text:"Questions to revisit ("+miss.length+")"}));
+  if(!miss.length)mp.append(h("p",{text:t.done?"No misses among the questions checked so far.":"Nothing checked yet. Answer some questions, then come back here."}));
+  else{var list=h("div",{class:"missed"});miss.forEach(function(q){
+    list.append(h("button",{type:"button",onclick:function(){go(q.sec.id,q.id);}},h("span",{class:"k",text:"Q"+q.n}),h("span",{text:q.q})));});mp.append(list);}
+  out.push(mp);
+  return out;
+}
+function render(){
+  var main=document.getElementById("main");main.textContent="";
+  if(current==="overview")overview().forEach(function(n){main.append(n);});
+  else if(current==="results")results().forEach(function(n){main.append(n);});
+  else{var i=SECTIONS.findIndex(function(s){return s.id===current;}),sec=SECTIONS[i];
+    main.append(h("div",{class:"sec-head"},h("h2",{text:(i+1)+". "+sec.name}),h("p",{text:sec.blurb})));
+    sec.qs.forEach(function(q){main.append(card(q));});
+    main.append(sectionNav(i));}
+  updateChrome();
+}
+function updateChrome(){
+  var rail=document.getElementById("rail");rail.textContent="";
+  function link(id,n,name,c){rail.append(h("a",{href:"#"+id,"aria-current":current===id?"true":"false"},h("span",{class:"n",text:n}),h("span",{text:name}),h("span",{class:"c",text:c})));}
+  link("overview","·","Overview","");
+  SECTIONS.forEach(function(s,i){var x=tally(s.qs);link(s.id,String(i+1),s.name,x.done?x.right+"/"+x.done:x.answered+"/"+x.total);});
+  var t=tally(ALL);link("results","✓","Results",t.done?Math.round(100*t.right/t.done)+"%":"");
+  document.getElementById("tbQ").textContent=String(ALL.length);
+  document.getElementById("tbS").textContent=String(SECTIONS.length);
+  document.getElementById("tbScore").textContent=t.right+" / "+t.done;
+  document.getElementById("meterText").textContent="Answered "+t.answered+" of "+t.total+" · "+t.right+" correct of "+t.done+" checked";
+  document.getElementById("meterBar").style.width=(100*t.answered/t.total)+"%";
+  document.getElementById("modeStudy").setAttribute("aria-pressed",String(st.mode==="study"));
+  document.getElementById("modeExam").setAttribute("aria-pressed",String(st.mode==="exam"));
+}
+document.getElementById("modeStudy").addEventListener("click",function(){st.mode="study";save();render();});
+document.getElementById("modeExam").addEventListener("click",function(){st.mode="exam";save();render();});
+window.addEventListener("hashchange",function(){var id=location.hash.slice(1);if(id!==current){current=viewIds().indexOf(id)>=0?id:"overview";render();window.scrollTo(0,0);}});
+(function(){var id=location.hash.slice(1);current=viewIds().indexOf(id)>=0?id:"overview";render();})();
+</script>
+</body>
+</html>
